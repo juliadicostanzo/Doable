@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 export function Task(props) {
   return (
     <View>
-      <Text>{props.title}</Text>
+      <Text style={styles.taskTitle}> {props.title}</Text>
       <Text>{props.dueDate}</Text>
     </View>
   );

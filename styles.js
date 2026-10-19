@@ -15,8 +15,38 @@ logoContainer: {
 
   logo: {
     fontSize: 40,
+    //fontFamily: 'sacramento',
     fontWeight: 'bold',
     color: '#2d68e9',
+  },
+
+  dateContainer: {
+    marginBottom: 10,   
+  },
+
+  dateText: {
+    fontSize: 18,
+  },
+
+  todaysProgressContainer: {
+    backgroundColor: '#efefef',
+    padding: 10,
+    borderColor: 'black',
+    borderRadius: 20,
+    borderWidth: 1,
+  },
+
+  progressBox: {
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+    width: '100%',
+  },
+
+  space: {
+    paddingTop: 10
   },
 
   todaysTasksContainer: {
@@ -44,7 +74,32 @@ logoContainer: {
   divider: {
     height: 1,
     backgroundColor: '#4e4c4c',
+    margin: 8,
   },
+
+  taskTitle: {
+    fontSize: 16,
+  },
+
+  taskSubtitle: {
+    fontSize: 14,
+    marginTop: 2,
+  },
+
+  addTaskTitle: {
+    fontSize: 34,
+    alignContent: 'center',
+    fontWeight: 'bold',
+  },
+
+  taskInputBox: {
+    borderColor: '#000000',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+    width: '100%',
+  },
+  
   
 });
 
