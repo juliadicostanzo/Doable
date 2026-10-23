@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View, FlatList } from 'react-native';
 import { useState } from 'react';
 import { styles } from './styles.js';
 
@@ -12,15 +12,20 @@ import { Calendar } from './components/Calendar.js';
 export default function App() {
   const [tasks, setTasks] = useState([
     {
+      id: '1',
       title: 'Project Part 1',
       list: 'Mobile',
+      dueDate: '10/26/26',
       completed: false,
     },
     {
+      id: '2',
       title: 'Networks Lab',
       list: 'Networks',
+      dueDate: '10/26/26',
       completed: false,
-    },]);
+    },
+  ]);
   
   const addTask = (newTask) => {
     setTasks([...tasks, newTask]);
