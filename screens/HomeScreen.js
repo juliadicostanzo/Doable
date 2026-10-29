@@ -37,11 +37,11 @@ export function HomeScreen() {
       <View style={styles.todaysTasksContainer}>
         <Text style={styles.todayTitle}> Today's Tasks </Text>
           <View style={styles.todayTaskBox}>
-            <TodayTask title="Lab 6" list="Mobile" />
+            <TodayTask title="Lab 6" list="Mobile" Date="10/16/26" time="10:00AM"/>
             <View style={styles.divider} />
-            <TodayTask title="Read Section 3.4" list="Networks" />
+            <TodayTask title="Read Section 3.4" list="Networks"  Date="10/16/26" time="10:00AM"/>
             <View style={styles.divider} />
-            <TodayTask title="Project Demo Slides" list="Internship" />
+            <TodayTask title="Project Demo Slides" list="Internship"  Date="10/16/26" time="10:00AM"/>
           </View>
       </View>
 
