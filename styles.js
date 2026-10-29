@@ -1,15 +1,5 @@
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-
-  taskTitle: {
-    fontSize: 16,
-  },
-
-  taskSubtitle: {
-    fontSize: 14,
-    marginTop: 2,
-  },
-
   addTaskTitle: {
     fontSize: 34,
     alignContent: 'center',
