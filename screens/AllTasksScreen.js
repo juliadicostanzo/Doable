@@ -1,17 +1,17 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { ListTask } from '../components/ListTask.js';
+import { Task } from '../components/Task.js';
 
 export function AllTasksScreen() {
   return (
     <View style={styles.pageContainer}>
       <Text style={styles.pageTitle}>All Tasks</Text>
       
-      <View style={styles.todayTaskBox}>
-        <ListTask title="Lab 6" list="Mobile" date="10/16/26" time="10:00AM"/>
+      <View style={styles.taskBox}>
+        <Task title="Lab 6" list="Mobile" date="10/16/26" time="10:00AM"/>
         <View style={styles.divider} />
-        <ListTask title="Read Section 3.4" list="Networks"  date="10/16/26" time="10:00AM"/>
+        <Task title="Read Section 3.4" list="Networks"  date="10/16/26" time="10:00AM"/>
         <View style={styles.divider} />
-        <ListTask title="Project Demo Slides" list="Internship"  date="10/16/26" time="10:00AM"/>
+        <Task title="Project Demo Slides" list="Internship"  date="10/16/26" time="10:00AM"/>
       </View>
     </View>
   );
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  todayTaskBox: {
+  taskBox: {
     marginTop: 15,
     borderColor: '#4e4c4c',
     borderWidth: 1,

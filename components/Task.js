@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 
 
-export function ListTask({ title, list, date, time }) {
+export function Task({ title, list, date, time }) {
   return (
     
     <View style={styles.taskRow}>

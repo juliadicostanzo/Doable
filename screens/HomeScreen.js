@@ -1,4 +1,4 @@
-import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TodayTask } from '../components/TodayTask.js';
 
 export function HomeScreen() {
@@ -37,11 +37,22 @@ export function HomeScreen() {
       <View style={styles.todaysTasksContainer}>
         <Text style={styles.todayTitle}> Today's Tasks </Text>
           <View style={styles.todayTaskBox}>
-            <TodayTask title="Lab 6" list="Mobile" Date="10/16/26" time="10:00AM"/>
+
+            <TouchableOpacity>
+              <TodayTask title="Lab 6" list="Mobile" Date="10/16/26" time="10:00AM"/>
+            </TouchableOpacity>
+
             <View style={styles.divider} />
-            <TodayTask title="Read Section 3.4" list="Networks"  Date="10/16/26" time="10:00AM"/>
+
+            <TouchableOpacity>
+              <TodayTask title="Read Section 3.4" list="Networks"  Date="10/16/26" time="10:00AM"/>
+            </TouchableOpacity>
+
             <View style={styles.divider} />
-            <TodayTask title="Project Demo Slides" list="Internship"  Date="10/16/26" time="10:00AM"/>
+
+            <TouchableOpacity>
+              <TodayTask title="Project Demo Slides" list="Internship"  Date="10/16/26" time="10:00AM"/>
+            </TouchableOpacity>
           </View>
       </View>
 
@@ -103,7 +114,7 @@ const styles = StyleSheet.create({
   },
 
   todaysTasksContainer: {
-    backgroundColor: '#f8d5d3',
+    //backgroundColor: '#f8d5d3',
     padding: 10,
     borderColor: '#ef5752',
     borderRadius: 20,
