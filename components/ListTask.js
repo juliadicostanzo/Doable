@@ -1,15 +1,21 @@
 import { View, Text, StyleSheet } from 'react-native';
 
 
-export function ListTask({ title, list, time }) {
+export function ListTask({ title, list, date, time }) {
   return (
+    
     <View style={styles.taskRow}>
-    <View>
-      <Text style={styles.taskTitle}>{title}</Text>
-      <Text style={styles.taskSubtitle}>{list}</Text>
-    </View>
-      <Text style={styles.taskDate}>{date}</Text>
-      <Text style={styles.taskTime}>{time}</Text>
+
+      <View>
+        <Text style={styles.taskTitle}>{title}</Text>
+        <Text style={styles.taskSubtitle}>{list}</Text>
+      </View>
+
+      <View style={styles.dateTimeContainer}>
+        <Text style={styles.taskDate}>{date}</Text>
+        <Text style={styles.taskTime}>{time}</Text>
+      </View>
+
     </View>
   );
 }
@@ -19,6 +25,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+
+  dateTimeContainer: {
+    alignItems: 'flex-end',
   },
   
   taskTitle: {
@@ -37,6 +47,5 @@ const styles = StyleSheet.create({
 
   taskDate: {
     fontSize: 14,
-    marginRight: 2,
   },
 });

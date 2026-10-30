@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 export function AddTaskScreen() {
   return (
     <View style={styles.pageContainer}>
-      <Text style={styles.addTaskTitle}>Add Task</Text>
+      <Text style={styles.pageTitle}>Add Task</Text>
       <Text style={styles.inputBoxLabel}>Task name</Text>
       <TextInput style={styles.taskInputBox}
         placeholder="Enter task name"
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
 
-  addTaskTitle: {
+  pageTitle: {
     fontSize: 34,
     textAlign: 'center',
     fontWeight: 'bold',
