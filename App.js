@@ -12,7 +12,10 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false, //hides built in header
+        }}>
 
         <Tab.Screen
           name="Home"

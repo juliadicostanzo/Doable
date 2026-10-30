@@ -1,10 +1,42 @@
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-export function Task(props) {
+
+export function ListTask({ title, list, time }) {
   return (
+    <View style={styles.taskRow}>
     <View>
-      <Text style={styles.taskTitle}> {props.title}</Text>
-      <Text>{props.dueDate}</Text>
+      <Text style={styles.taskTitle}>{title}</Text>
+      <Text style={styles.taskSubtitle}>{list}</Text>
+    </View>
+      <Text style={styles.taskDate}>{date}</Text>
+      <Text style={styles.taskTime}>{time}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  taskRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  
+  taskTitle: {
+    fontSize: 16,
+  },
+
+  taskSubtitle: {
+    fontSize: 14,
+    marginTop: 2,
+  },
+  
+  taskTime: {
+    fontSize: 14,
+    marginRight: 2,
+  },
+
+  taskDate: {
+    fontSize: 14,
+    marginRight: 2,
+  },
+});
