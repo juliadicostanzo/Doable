@@ -12,7 +12,7 @@ export function HomeScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.pageContainer}>
-
+      
       <View style={styles.logoContainer}>
         <Text style={styles.logo}>Doable</Text>
       </View>
@@ -35,9 +35,16 @@ export function HomeScreen() {
       <View style={styles.space}/>
 
       <View style={styles.todaysTasksContainer}>
-        <Text style={styles.todayTitle}> Today's Tasks </Text>
-          <View style={styles.todayTaskBox}>
 
+        <View style={styles.sectionHeader}>
+          <Text style={styles.todayTitle}> Today's Tasks </Text>
+          <TouchableOpacity style={styles.viewAllContainer}>
+            <Text style={styles.viewAllText}>View All</Text>
+            <Text style={styles.viewAllArrow}>›</Text>
+          </TouchableOpacity>
+        </View>
+
+          <View style={styles.todayTaskBox}>
             <TouchableOpacity>
               <TodayTask title="Lab 6" list="Mobile" Date="10/16/26" time="10:00AM"/>
             </TouchableOpacity>
@@ -139,5 +146,24 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#4e4c4c',
     margin: 8,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  viewAllContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  viewAllText: {
+    fontSize: 14,
+    marginRight: 6,
+  },
+
+  viewAllArrow: {
+    fontSize: 24,
   },
 });
