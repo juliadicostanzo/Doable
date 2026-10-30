@@ -12,7 +12,7 @@ export function TodayTask({ title, list, time }) {
 
       <View style={styles.rightSide}>
         <Text style={styles.taskTime}>{time}</Text>
-        <Text style={styles.arrow}>›</Text>
+        {/* <Text style={styles.arrow}>›</Text> */}
       </View>
 
     </View>
