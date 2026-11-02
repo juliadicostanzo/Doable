@@ -27,8 +27,10 @@ Doable is a React Native task-management application designed to make managing t
 2. Install dependencies:
 
    npm install
+   npm install @react-navigation/bottom-tabs
+   npm install @react-native-vector-icons/ionicons
 
-3. Start Expo:
+4. Start Expo:
 
    npx expo start
 
