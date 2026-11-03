@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { HomeScreen } from './screens/HomeScreen.js';
 import { CalendarScreen } from './screens/CalendarScreen.js';
@@ -13,35 +14,46 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        screenOptions={{
+        screenOptions={({ route }) => ({
           headerShown: false, //hides built in header
-        }}>
+          
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-        />
+            if (route.name === 'Home') {
+              iconName = focused ? 'home' : 'home-outline';
+            } 
+            else if (route.name === 'Calendar') {
+              iconName = focused ? 'calendar' : 'calendar-outline';
+            } 
+            else if (route.name === 'Add Task') {
+              iconName = focused ? 'add-circle' : 'add-circle-outline';
+            } 
+            else if (route.name === 'All Tasks') {
+              iconName = focused ? 'clipboard' : 'clipboard-outline';
+            } 
+            else if (route.name === 'Lists') {
+              iconName = focused ? 'folder' : 'folder-outline';
+            }
 
-        <Tab.Screen
-          name="Calendar"
-          component={CalendarScreen}
-        />
+            return (
+              <Ionicons
+                name={iconName}
+                size={22}
+                color={color}
+              />
+            );
+          },
+          tabBarActiveTintColor: '#2d68e9',
+          tabBarInactiveTintColor: 'gray',
+        })}
+      >
 
-        <Tab.Screen
-          name="Add Task"
-          component={AddTaskScreen}
-        />
-
-        <Tab.Screen
-          name="All Tasks"
-          component={AllTasksScreen}
-        />
-
-        <Tab.Screen
-          name="Lists"
-          component={ListsScreen}
-        />
-
+        <Tab.Screen name="Home" component={HomeScreen}/>
+        <Tab.Screen name="Calendar" component={CalendarScreen}/>
+        <Tab.Screen name="Add Task" component={AddTaskScreen}/>
+        <Tab.Screen name="All Tasks" component={AllTasksScreen}/>
+        <Tab.Screen name="Lists" component={ListsScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
