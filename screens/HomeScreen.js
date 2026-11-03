@@ -75,7 +75,7 @@ export function HomeScreen() {
 const styles = StyleSheet.create({
   pageContainer: {
     backgroundColor: 'white',
-    paddingHorizontal: 10, //everything on page is 10 pixels from horizontal edge
+    paddingHorizontal: 20, //everything on page is 20 pixels from horizontal edge
     paddingTop: 60,
   },
 

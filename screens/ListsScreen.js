@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 
-export function ListsScreen() {
+export function ListsScreen({ navigation }) {
   return (
     <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>Lists</Text>
-      <TouchableOpacity style={styles.listRow}>
+
+      <TouchableOpacity style={styles.listRow} 
+        onPress={() => navigation.navigate('ListDetailScreen', { listName: 'Mobile' })}
+      >
         <View>
           <Text style={styles.listName}>Mobile</Text>
         </View>
@@ -13,7 +16,9 @@ export function ListsScreen() {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.listRow}>
+      <TouchableOpacity style={styles.listRow}
+        onPress={() => navigation.navigate('ListDetailScreen', { listName: 'Networks' })}
+      >
         <View>
           <Text style={styles.listName}>Networks</Text>
         </View>

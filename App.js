@@ -1,5 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { HomeScreen } from './screens/HomeScreen.js';
@@ -7,8 +9,19 @@ import { CalendarScreen } from './screens/CalendarScreen.js';
 import { AddTaskScreen } from './screens/AddTaskScreen.js';
 import { AllTasksScreen } from './screens/AllTasksScreen.js';
 import { ListsScreen } from './screens/ListsScreen.js';
+import { ListDetailScreen } from './screens/ListDetailScreen.js';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function ListsNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ListsScreen" component={ListsScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="ListDetailScreen" component={ListDetailScreen} options={{ headerShown: false }}/>
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
@@ -53,7 +66,15 @@ export default function App() {
         <Tab.Screen name="Calendar" component={CalendarScreen}/>
         <Tab.Screen name="Add Task" component={AddTaskScreen}/>
         <Tab.Screen name="All Tasks" component={AllTasksScreen}/>
-        <Tab.Screen name="Lists" component={ListsScreen}/>
+        <Tab.Screen name="Lists" component={ListsNavigator} 
+          listeners={({ navigation }) => ({ 
+            tabPress: () => { 
+              navigation.navigate('Lists', {
+                screen: 'ListsScreen'
+              });
+            },
+          })}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
