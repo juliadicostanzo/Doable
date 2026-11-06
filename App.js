@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,6 +14,7 @@ import { ListDetailScreen } from './screens/ListDetailScreen.js';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
 
 function ListsNavigator() {
   return (

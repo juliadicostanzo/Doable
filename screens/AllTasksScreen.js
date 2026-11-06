@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Task } from '../components/Task.js';
 
 export function AllTasksScreen() {
   return (
-    <View style={styles.pageContainer}>
+    <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>All Tasks</Text>
       
       <View style={styles.taskBox}>
@@ -13,7 +13,7 @@ export function AllTasksScreen() {
         <View style={styles.divider} />
         <Task title="Project Demo Slides" list="Internship"  date="10/16/26" time="10:00AM"/>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
   },
 
   taskBox: {
-    marginTop: 15,
-    borderColor: '#4e4c4c',
+    borderColor: '#cccccc',
     borderWidth: 1,
     borderRadius: 12,
     padding: 12,
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
 
   divider: {
     height: 1,
-    backgroundColor: '#4e4c4c',
-    margin: 8,
+    backgroundColor: '#dddddd',
+    marginVertical: 10,
   },
 });

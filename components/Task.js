@@ -8,7 +8,7 @@ export function Task({ title, list, date, time }) {
 
       <View>
         <Text style={styles.taskTitle}>{title}</Text>
-        <Text style={styles.taskSubtitle}>{list}</Text>
+        <Text style={styles.taskList}>{list}</Text>
       </View>
 
       <View style={styles.dateTimeContainer}>
@@ -26,18 +26,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
-  dateTimeContainer: {
-    alignItems: 'flex-end',
-  },
   
   taskTitle: {
     fontSize: 16,
   },
 
-  taskSubtitle: {
+  taskList: {
     fontSize: 14,
     marginTop: 2,
+  },
+
+  taskRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  dateTime: {
+    alignItems: 'flex-end',
   },
   
   taskTime: {
@@ -48,4 +53,6 @@ const styles = StyleSheet.create({
   taskDate: {
     fontSize: 14,
   },
+
+
 });
