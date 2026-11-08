@@ -26,6 +26,41 @@ function ListsNavigator() {
 }
 
 export default function App() {
+  const [tasks, setTasks] = useState([
+  {
+    id: "1", 
+    title: "Lab 8", 
+    list: "Mobile",
+    dueDate: "11/10/26",
+    time: "11:59 PM",
+    location: "",
+    notes: "",
+    completed: false
+  },
+  {
+    id: "2",
+    title: "Networks Homework",
+    list: "Networks",
+    dueDate: "11/12/26",
+    time: "11:59 PM",
+    location: "",
+    notes: "",
+    completed: false
+  }
+]);
+const [nextId, setNextId] = useState(3);
+
+const addTask = (newTask) => { //newTask = task object from addTaskScreen.js
+  const taskToAdd = { //creates final version of task 
+    id: String(nextId), // Convert the nextId to a string
+    ...newTask, //copies all other properties from newTask into taskToAdd
+    completed: false
+  };
+
+  setTasks([...tasks, taskToAdd]); // updates tasks array
+  setNextId(nextId + 1); // increases ID counter
+};
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -66,8 +101,16 @@ export default function App() {
 
         <Tab.Screen name="Home" component={HomeScreen}/>
         <Tab.Screen name="Calendar" component={CalendarScreen}/>
-        <Tab.Screen name="Add Task" component={AddTaskScreen}/>
-        <Tab.Screen name="All Tasks" component={AllTasksScreen}/>
+        <Tab.Screen name="Add Task">
+          {(props) => (
+            <AddTaskScreen navigation={props.navigation} route={props.route} onAddTask={addTask}/>
+          )}
+        </Tab.Screen> 
+        <Tab.Screen name="All Tasks">
+          {() => (
+            <AllTasksScreen tasks={tasks} />
+          )}
+        </Tab.Screen>
         <Tab.Screen name="Lists" component={ListsNavigator} 
           listeners={({ navigation }) => ({ 
             tabPress: () => { 

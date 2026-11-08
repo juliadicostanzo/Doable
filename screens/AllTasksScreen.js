@@ -1,17 +1,26 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Task } from '../components/Task.js';
 
-export function AllTasksScreen() {
+export function AllTasksScreen({ tasks }) {
   return (
     <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>All Tasks</Text>
       
       <View style={styles.taskBox}>
-        <Task title="Lab 6" list="Mobile" date="10/16/26" time="10:00AM"/>
-        <View style={styles.divider} />
-        <Task title="Read Section 3.4" list="Networks"  date="10/16/26" time="10:00AM"/>
-        <View style={styles.divider} />
-        <Task title="Project Demo Slides" list="Internship"  date="10/16/26" time="10:00AM"/>
+        {tasks.map((task, index) => (
+          <View key={task.id}>
+            <Task
+              title={task.title}
+              list={task.list}
+              date={task.dueDate}
+              time={task.time}
+            />
+
+            {index < tasks.length - 1 && (
+              <View style={styles.divider} />
+            )}
+            </View>
+          ))}
       </View>
     </ScrollView>
   );
