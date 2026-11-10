@@ -1,14 +1,24 @@
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TodayTask } from '../components/TodayTask.js';
 
-export function HomeScreen() {
+export function HomeScreen({ tasks, navigation }) {
 
-  const today = new Date().toLocaleDateString(undefined, {
+  const currentDate = new Date();
+
+  const todayDateString = currentDate.toLocaleDateString(undefined, {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+
+  const todayDueDate =
+    String(currentDate.getMonth() + 1)+ '/' +
+    String(currentDate.getDate())+ '/' +
+    String(currentDate.getFullYear()).slice(-2);
+
+  //filter only tasks due today
+  const todayTasks = tasks.filter(task => task.dueDate === todayDueDate);
 
   return (
     <ScrollView contentContainerStyle={styles.pageContainer}>
@@ -18,7 +28,7 @@ export function HomeScreen() {
       </View>
 
       <View style={styles.dateContainer}>
-        <Text style={styles.dateText}>{today}</Text>
+        <Text style={styles.dateText}>{todayDateString}</Text>
       </View>
 
       <View style={styles.todaysProgressContainer}>
@@ -38,28 +48,29 @@ export function HomeScreen() {
 
         <View style={styles.sectionHeader}>
           <Text style={styles.todayTitle}> Today's Tasks </Text>
-          <TouchableOpacity style={styles.viewAllContainer}>
+          <TouchableOpacity style={styles.viewAllContainer} onPress={() => navigation.navigate('All Tasks')}>
             <Text style={styles.viewAllText}>View All</Text>
             <Text style={styles.viewAllArrow}>›</Text>
+            
           </TouchableOpacity>
         </View>
 
           <View style={styles.todayTaskBox}>
-            <TouchableOpacity>
-              <TodayTask title="Lab 6" list="Mobile" Date="10/16/26" time="10:00AM"/>
-            </TouchableOpacity>
+            {todayTasks.map((task, index) => (
+              <View key={task.id}>
+                <TouchableOpacity>
+                  <TodayTask
+                    title={task.title}
+                    list={task.list}
+                    time={task.time}
+                  />
+                </TouchableOpacity>
 
-            <View style={styles.divider} />
-
-            <TouchableOpacity>
-              <TodayTask title="Read Section 3.4" list="Networks"  Date="10/16/26" time="10:00AM"/>
-            </TouchableOpacity>
-
-            <View style={styles.divider} />
-
-            <TouchableOpacity>
-              <TodayTask title="Project Demo Slides" list="Internship"  Date="10/16/26" time="10:00AM"/>
-            </TouchableOpacity>
+                {index < todayTasks.length - 1 && (
+                  <View style={styles.divider} />
+                )}
+              </View>
+            ))}
           </View>
       </View>
 

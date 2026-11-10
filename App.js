@@ -99,18 +99,26 @@ const addTask = (newTask) => { //newTask = task object from addTaskScreen.js
         })}
       >
 
-        <Tab.Screen name="Home" component={HomeScreen}/>
-        <Tab.Screen name="Calendar" component={CalendarScreen}/>
-        <Tab.Screen name="Add Task">
+        <Tab.Screen name="Home">
           {(props) => (
-            <AddTaskScreen navigation={props.navigation} route={props.route} onAddTask={addTask}/>
+            <HomeScreen tasks={tasks} navigation={props.navigation}/>
+          )}
+        </Tab.Screen>
+        
+        <Tab.Screen name="Calendar" component={CalendarScreen}/>
+        
+        <Tab.Screen name="Add Task">
+          {() => (
+            <AddTaskScreen onAddTask={addTask}/>
           )}
         </Tab.Screen> 
+        
         <Tab.Screen name="All Tasks">
           {() => (
             <AllTasksScreen tasks={tasks} />
           )}
         </Tab.Screen>
+        
         <Tab.Screen name="Lists" component={ListsNavigator} 
           listeners={({ navigation }) => ({ 
             tabPress: () => { 
