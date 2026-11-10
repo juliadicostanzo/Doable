@@ -18,8 +18,9 @@ export function HomeScreen({ tasks, navigation }) {
     String(currentDate.getFullYear()).slice(-2);
 
   //filter only tasks due today
-  const todayTasks = tasks.filter(task => task.dueDate === todayDueDate);
-
+  const todayTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed == false);
+  const todayCompletedTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed);
+  
   return (
     <ScrollView contentContainerStyle={styles.pageContainer}>
       
@@ -37,6 +38,9 @@ export function HomeScreen({ tasks, navigation }) {
         </Text>
 
         <View style={styles.progressBox}>
+          {todayTasks.length === 0 ? (
+              <Text style={styles.noTasksText}>No tasks due today!</Text>
+            ) : (<Text >{todayCompletedTasks.length} out of {todayTasks.length} tasks done</Text>)}
           <Text>Progress bar</Text>
           <Text>0 out of 3 tasks done</Text>
         </View>

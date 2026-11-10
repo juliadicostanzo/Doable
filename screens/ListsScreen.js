@@ -1,13 +1,19 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput } from 'react-native';
+import { useState } from 'react';
 
 export function ListsScreen({ navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [listName, setListName] = useState('');
+  
   return (
     <ScrollView style={styles.pageContainer}>
       
       <View style={styles.headerContainer}>
         <Text style={styles.pageTitle}>Lists</Text>
 
-        <TouchableOpacity style={styles.addListButton}>
+        <TouchableOpacity style={styles.addListButton} 
+          onPress={() => setModalVisible(true)}
+        >
           <Text style={styles.addListText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -69,6 +75,49 @@ export function ListsScreen({ navigation }) {
           <Text style={styles.arrow}>›</Text>
         </View>
       </TouchableOpacity>
+
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalBox}>
+            
+            <Text style={styles.modalTitle}>Add List</Text>
+            <Text style={styles.inputLabel}>List Name</Text>
+            
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter list name"
+              value={listName}
+              onChangeText={setListName}
+            />
+            
+            <View style={styles.modalButtons}>
+
+              <TouchableOpacity style={styles.cancelButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text>Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.saveButton}
+                onPress={() => {
+                  console.log(listName);
+                  setModalVisible(false);
+                  setListName('');
+                }}
+              >
+                <Text style={styles.saveButtonText}>Save</Text>
+              </TouchableOpacity>
+
+            </View>
+
+          </View>
+        </View>
+      </Modal>
+
     </ScrollView>
   );
 }
@@ -125,5 +174,61 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
+  },
+
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modalBox: {
+    width: '85%',
+    backgroundColor: 'white',
+    borderRadius: 15,
+    padding: 20,
+  },
+
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+
+  inputLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+
+  inputBox: {
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 10,
+    padding: 12,
+  },
+
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 20,
+  },
+
+  cancelButton: {
+    padding: 12,
+    marginRight: 10,
+  },
+
+  saveButton: {
+    backgroundColor: '#2d68e9',
+    padding: 12,
+    borderRadius: 8,
+  },
+
+  saveButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
