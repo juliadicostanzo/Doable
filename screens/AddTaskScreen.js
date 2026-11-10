@@ -17,6 +17,18 @@ export function AddTaskScreen({ onAddTask }) {
       return;
     }
 
+    // .test(dueDate) returns true if the dueDate matches 
+    // \d{1,2} 1 or 2 digits
+    if (dueDate !== '' && !/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(dueDate)) {
+      Alert.alert('Error', 'Please enter a valid due date in MM/DD/YYYY format.');
+      return;
+    }
+
+    if (time !== '' && !/^\d{1,2}:\d{1,2}\s?(AM|PM)$/i.test(time)) {
+      Alert.alert('Error', 'Please enter a valid time in HH:MM AM/PM format.');
+      return;
+    }
+
     const newTask = {
       title: title,
       list: list,
