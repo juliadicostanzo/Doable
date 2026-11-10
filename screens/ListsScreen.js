@@ -3,7 +3,14 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 export function ListsScreen({ navigation }) {
   return (
     <ScrollView style={styles.pageContainer}>
-      <Text style={styles.pageTitle}>Lists</Text>
+      
+      <View style={styles.headerContainer}>
+        <Text style={styles.pageTitle}>Lists</Text>
+
+        <TouchableOpacity style={styles.addListButton}>
+          <Text style={styles.addListText}>+</Text>
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity style={styles.listRow} 
         onPress={() => navigation.navigate('ListDetailScreen', { listName: 'Mobile' })}
@@ -95,6 +102,28 @@ const styles = StyleSheet.create({
   },
   arrow: {
     fontSize: 28,
-  }
+  },
+  addListButton: {
+    position: 'absolute',
+    right: 3,
+    top: 1,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#2d68e9',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
+  addListText: {
+    color: 'white',
+    fontSize: 28,
+    lineHeight: 30,
+  },
+  headerContainer: {
+    position: 'relative',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
 });
