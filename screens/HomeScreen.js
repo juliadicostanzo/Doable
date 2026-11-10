@@ -56,7 +56,10 @@ export function HomeScreen({ tasks, navigation }) {
         </View>
 
           <View style={styles.todayTaskBox}>
-            {todayTasks.map((task, index) => (
+            {todayTasks.length === 0 ? (
+              <Text style={styles.noTasksText}>No tasks due today!</Text>
+            ) : (
+            todayTasks.map((task, index) => (
               <View key={task.id}>
                 <TouchableOpacity>
                   <TodayTask
@@ -70,7 +73,8 @@ export function HomeScreen({ tasks, navigation }) {
                   <View style={styles.divider} />
                 )}
               </View>
-            ))}
+            ))
+          )}
           </View>
       </View>
 
@@ -176,5 +180,12 @@ const styles = StyleSheet.create({
 
   viewAllArrow: {
     fontSize: 24,
+  },
+
+  noTasksText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'gray',
+    paddingVertical: 10,
   },
 });
