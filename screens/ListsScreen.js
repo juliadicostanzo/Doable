@@ -1,9 +1,22 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput } from 'react-native';
 import { useState } from 'react';
 
-export function ListsScreen({ navigation }) {
+export function ListsScreen({ navigation, lists, onAddList}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [listName, setListName] = useState('');
+  const [listColor, setListColor] = useState('blue');
+  const saveList = () => {
+    const newList = {
+      name: listName,
+      color: listColor
+    };
+
+    onAddList(newList);
+
+    setListName('');
+    setListColor('');
+    setModalVisible(false);
+  };
   
   return (
     <ScrollView style={styles.pageContainer}>
@@ -18,36 +31,21 @@ export function ListsScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.listRow} 
-        onPress={() => navigation.navigate('ListDetailScreen', { listName: 'Mobile' })}
-      >
-        <View>
-          <Text style={styles.listName}>Mobile</Text>
-        </View>
-        <View style={styles.arrowContainer}>
+      {lists.map((list) => (
+        <TouchableOpacity
+          key={list.id}
+          style={styles.listRow}
+          onPress={() =>
+            navigation.navigate('ListDetailScreen', {
+              listName: list.name,
+              listColor: list.color
+            })
+          }
+        >
+          <Text style={styles.listName}>{list.name}</Text>
           <Text style={styles.arrow}>›</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.listRow}
-        onPress={() => navigation.navigate('ListDetailScreen', { listName: 'Networks' })}
-      >
-        <View>
-          <Text style={styles.listName}>Networks</Text>
-        </View>
-        <View style={styles.arrowContainer}>
-          <Text style={styles.arrow}>›</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.listRow}>
-        <View>
-          <Text style={styles.listName}>Internship</Text>
-        </View>
-        <View style={styles.arrowContainer}>
-          <Text style={styles.arrow}>›</Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      ))}
 
       <TouchableOpacity style={styles.listRow}>
         <View>
@@ -93,6 +91,23 @@ export function ListsScreen({ navigation }) {
               value={listName}
               onChangeText={setListName}
             />
+            <Text style={styles.inputLabel}>List Color</Text>
+
+            <View style={styles.colorInputRow}>
+              <View
+                style={[
+                  styles.colorPreview,
+                  { backgroundColor: listColor }
+                ]}
+              />
+
+              <TextInput
+                style={styles.colorInput}
+                placeholder="blue"
+                value={listColor.toLowerCase()}
+                onChangeText={setListColor}
+              />
+            </View>
             
             <View style={styles.modalButtons}>
 
@@ -103,11 +118,7 @@ export function ListsScreen({ navigation }) {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.saveButton}
-                onPress={() => {
-                  console.log(listName);
-                  setModalVisible(false);
-                  setListName('');
-                }}
+                onPress={saveList}
               >
                 <Text style={styles.saveButtonText}>Save</Text>
               </TouchableOpacity>
@@ -201,6 +212,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
+    paddingTop: 10
   },
 
   inputBox: {
@@ -230,5 +242,26 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  colorInputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  colorPreview: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    marginRight: 10,
+  },
+
+  colorInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 10,
+    padding: 12,
   },
 });

@@ -15,51 +15,65 @@ import { ListDetailScreen } from './screens/ListDetailScreen.js';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-
-function ListsNavigator() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="ListsScreen" component={ListsScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="ListDetailScreen" component={ListDetailScreen} options={{ headerShown: false }}/>
-    </Stack.Navigator>
-  );
-}
-
 export default function App() {
-  const [tasks, setTasks] = useState([
-  {
-    id: "1", 
-    title: "Lab 8", 
-    list: "Mobile",
-    dueDate: "11/10/26",
-    time: "11:59 PM",
-    location: "",
-    notes: "",
-    completed: false
-  },
-  {
-    id: "2",
-    title: "Networks Homework",
-    list: "Networks",
-    dueDate: "11/12/26",
-    time: "11:59 PM",
-    location: "",
-    notes: "",
-    completed: false
-  }
-]);
-const [nextId, setNextId] = useState(3);
 
-const addTask = (newTask) => { //newTask = task object from addTaskScreen.js
-  const taskToAdd = { //creates final version of task 
-    id: String(nextId), // Convert the nextId to a string
-    ...newTask, //copies all other properties from newTask into taskToAdd
-    completed: false
+  const [tasks, setTasks] = useState([
+    {id: "1", title: "Lab 8", list: "Mobile", dueDate: "11/10/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "2", title: "Networks Homework", list: "Networks", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false}
+  ]);
+
+  const [nextId, setNextId] = useState(3);
+
+  const addTask = (newTask) => { //newTask = task object from addTaskScreen.js
+    const taskToAdd = { //creates final version of task 
+      id: String(nextId), // Convert the nextId to a string
+      ...newTask, //copies all other properties from newTask into taskToAdd
+      completed: false
+    };
+    setTasks([...tasks, taskToAdd]); // updates tasks array
+    setNextId(nextId + 1); // increases ID counter
   };
 
-  setTasks([...tasks, taskToAdd]); // updates tasks array
-  setNextId(nextId + 1); // increases ID counter
-};
+  const [lists, setLists] = useState([
+    { id: "1", name: "Mobile", color: "red" },
+    { id: "2", name: "Networks", color: "blue" },
+    { id: "3", name: "Internship", color: "green" }
+  ]);
+
+  const [nextListId, setNextListId] = useState(4);
+
+  const addList = (newList) => {
+    const listToAdd = {
+      id: String(nextListId), 
+      ...newList
+    };
+    setLists([...lists, listToAdd]);
+    setNextListId(nextListId + 1);
+  };
+
+  const [defaultLists, setDefaultLists] = useState([
+    { id: "1", name: "Archived"},
+    { id: "2", name: "Deleted Lists"},
+    { id: "3", name: "Deleted Tasks"}
+  ]);
+
+  function ListsNavigator() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="ListsScreen" options={{ headerShown: false }} >
+          {(props) => (
+            <ListsScreen
+              navigation={props.navigation}
+              route={props.route}
+              lists={lists}
+              onAddList={addList}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="ListDetailScreen" component={ListDetailScreen} options={{ headerShown: false }}/>
+      </Stack.Navigator>
+    );
+  }
 
   return (
     <NavigationContainer>
@@ -119,15 +133,9 @@ const addTask = (newTask) => { //newTask = task object from addTaskScreen.js
           )}
         </Tab.Screen>
         
-        <Tab.Screen name="Lists" component={ListsNavigator} 
-          listeners={({ navigation }) => ({ 
-            tabPress: () => { 
-              navigation.navigate('Lists', {
-                screen: 'ListsScreen'
-              });
-            },
-          })}
-        />
+        <Tab.Screen name="Lists"
+          component={ListsNavigator}
+        /> 
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export function ListDetailScreen({ route, navigation }) {
-  const { listName } = route.params;
+  const { listName, listColor } = route.params;
 
   return (
     <ScrollView style={styles.pageContainer}>
@@ -17,7 +17,7 @@ export function ListDetailScreen({ route, navigation }) {
         <Text style={styles.sectionTitle}>Progress</Text>
 
         <View style={styles.progressBarBackground}>
-          <View style={styles.progressBarFill} />
+          <View style={[styles.progressBarFill, {backgroundColor: listColor}]} />
         </View>
 
         <Text style={styles.progressText}> 4 of 5 tasks complete </Text>
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
   progressBarFill: {
     width: '80%',
     height: '100%',
-    backgroundColor: '#2d68e9',
   },
 
   progressText: {
