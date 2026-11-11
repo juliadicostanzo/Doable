@@ -63,11 +63,11 @@ export default function App() {
     setNextListId(nextListId + 1);
   };
 
-  const completeTask = (taskId) => { // taskId = task id of the task click
+  const toggleTaskCompleted = (taskId) => { // taskId = task id of the task click
     setTasks( // Updates tasks array
       tasks.map((task) => // Loop through all tasks 
         task.id === taskId // Check if the task id matches the taskId passed in
-          ? { ...task, completed: true } // If it matches, updates task object with completed set to true
+          ? { ...task, completed: !task.completed} // If it matches, updates task object with completed set to true if false and visa versa
           : task // If it doesn't match, return the task object unchanged
       )
     );
@@ -92,7 +92,7 @@ export default function App() {
               navigation={props.navigation}
               route={props.route}
               tasks={tasks}
-              //onCompleteTask={completeTask}
+              onToggleTaskComplete={toggleTaskCompleted}
             />
           )}
         </Stack.Screen>

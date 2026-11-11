@@ -1,13 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export function ListDetailScreen({ route, navigation, tasks }) {
+export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete }) {
   const { listName, listColor } = route.params;
 
   const listTasks = tasks.filter(task => task.list === listName && task.completed == false);
   const listCompletedTasks = tasks.filter(task => task.list === listName && task.completed);
-  const completedTaskPercent = listCompletedTasks.length/listTasks.length * 100 + '%';
-
+  const allTasksCount = listTasks.length + listCompletedTasks.length;
+  const completedTaskPercent = listCompletedTasks.length/allTasksCount * 100 + '%';
+  
   return (
     <ScrollView style={styles.pageContainer}>
       
@@ -28,18 +29,20 @@ export function ListDetailScreen({ route, navigation, tasks }) {
           <View style={{backgroundColor: listColor, height: '100%', width: completedTaskPercent}} />
         </View>
 
-        <Text style={styles.progressText}> {listCompletedTasks.length} of {listTasks.length} tasks complete </Text>
+        <Text style={styles.progressText}> {listCompletedTasks.length} of {allTasksCount} tasks complete </Text>
       </View>
 
       {/* Task Section */}
       <Text style={styles.sectionTitle}>Tasks</Text>
       <View style={styles.taskContainer}>
         {listTasks.length === 0 ? (
-          <Text style={styles.noTasksText}>No tasks yet</Text>
+          <Text style={styles.noTasksText}>No tasks</Text>
         ) : (
         listTasks.map((task, index) => (
           <View key={task.id}>
-            <TouchableOpacity style={styles.taskRow}>
+            <TouchableOpacity style={styles.taskRow}  onPress={() => onToggleTaskComplete(task.id)}>
+              <Ionicons name="radio-button-off" size={24} color= {listColor} style={styles.completeButton}/>
+
               <Text style={styles.taskTitle}>{task.title}</Text>
 
               <View style={styles.taskRight}>
@@ -65,7 +68,10 @@ export function ListDetailScreen({ route, navigation, tasks }) {
         ) : (
         listCompletedTasks.map((task, index) => (
           <View key={task.id}>
-            <TouchableOpacity style={styles.taskRow}>
+            {/* Button */}
+            <TouchableOpacity style={styles.taskRow} onPress={() => onToggleTaskComplete(task.id)}>
+              <Ionicons name="radio-button-on" size={24} color= {listColor} style={styles.completeButton}/>
+
               <Text style={styles.taskTitle}>{task.title}</Text>
 
               <View style={styles.taskRight}>
@@ -94,7 +100,7 @@ const styles = StyleSheet.create({
   // Page Container
   pageContainer: {
     backgroundColor: 'white',
-    paddingHorizontal: 20, //everything on page is 20 pixels from horizontal edge
+    paddingHorizontal: 20, // everything on page is 20 pixels from horizontal edge
     paddingTop: 60,
     paddingBottom: 40,
   },
@@ -148,12 +154,16 @@ const styles = StyleSheet.create({
 
   taskRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+  },
+
+  completeButton: {
+    marginRight: 10,
   },
 
   taskTitle: {
     fontSize: 16,
+    flex: 1, // takes up remaining space
   },
 
   taskRight: {
