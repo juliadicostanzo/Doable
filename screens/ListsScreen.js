@@ -5,7 +5,13 @@ export function ListsScreen({ navigation, lists, onAddList}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [listName, setListName] = useState('');
   const [listColor, setListColor] = useState('blue');
+  
   const saveList = () => {
+    if (listName === '' || listColor === ''){
+      Alert.alert('Error', 'Please enter a task name and list.');
+        return;
+    }
+
     const newList = {
       name: listName,
       color: listColor

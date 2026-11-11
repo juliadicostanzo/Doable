@@ -18,8 +18,10 @@ const Stack = createNativeStackNavigator();
 export default function App() {
 
   const [tasks, setTasks] = useState([
-    {id: "1", title: "Lab 8", list: "Mobile", dueDate: "11/10/26", time: "11:59 PM", location: "", notes: "", completed: false},
-    {id: "2", title: "Networks Homework", list: "Networks", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false}
+    {id: "1", title: "Lab 7", list: "Mobile", dueDate: "11/9/26", time: "11:59 PM", location: "", notes: "", completed: true},
+    {id: "2", title: "Lab 8", list: "Mobile", dueDate: "11/10/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "3", title: "Lab 9", list: "Mobile", dueDate: "11/11/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "4", title: "Lab 10", list: "Mobile", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false},
   ]);
 
   const [nextId, setNextId] = useState(3);
@@ -70,7 +72,15 @@ export default function App() {
             />
           )}
         </Stack.Screen>
-        <Stack.Screen name="ListDetailScreen" component={ListDetailScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ListDetailScreen" options={{ headerShown: false }}> 
+          {(props) => (
+            <ListDetailScreen
+              navigation={props.navigation}
+              route={props.route}
+              tasks={tasks}
+            />
+          )}
+        </Stack.Screen>
       </Stack.Navigator>
     );
   }

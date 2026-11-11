@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export function ListDetailScreen({ route, navigation }) {
+export function ListDetailScreen({ route, navigation, tasks }) {
   const { listName, listColor } = route.params;
 
+  const listTasks = tasks.filter(task => task.list === listName && task.completed == false);
+  const listCompletedTasks = tasks.filter(task => task.list === listName && task.completed);
+  
   return (
     <ScrollView style={styles.pageContainer}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -26,31 +29,22 @@ export function ListDetailScreen({ route, navigation }) {
       <Text style={styles.sectionTitle}>Tasks</Text>
       
       <View style={styles.taskContainer}>
+        {listTasks.map((task, index) => (
+          <View key={task.id}>
+            <TouchableOpacity style={styles.taskRow}>
+              <Text style={styles.taskTitle}>{task.title}</Text>
 
-        <TouchableOpacity style={styles.taskRow}>
-          <View>
-            <Text style={styles.taskTitle}>Lab 8</Text>
+              <View style={styles.taskRight}>
+                <Text style={styles.taskDate}>{task.dueDate}</Text>
+                <Text style={styles.taskTime}>{task.time}</Text>
+              </View>
+            </TouchableOpacity>
+
+            {index < listTasks.length - 1 && (
+              <View style={styles.divider} />
+            )}
           </View>
-
-          <View style={styles.taskRight}>
-            <Text style={styles.taskDate}>Nov 10</Text>
-            <Text style={styles.arrow}>›</Text>
-          </View>
-        </TouchableOpacity>
-
-        <View style={styles.divider} />
-
-        <TouchableOpacity style={styles.taskRow}>
-          <View>
-            <Text style={styles.taskTitle}>Project Part 2</Text>
-          </View>
-
-          <View style={styles.taskRight}>
-            <Text style={styles.taskDate}>Nov 15</Text>
-            <Text style={styles.arrow}>›</Text>
-          </View>
-        </TouchableOpacity>
-
+        ))}
       </View>
 
       <TouchableOpacity style={styles.deletedList}>
@@ -129,12 +123,15 @@ const styles = StyleSheet.create({
   },
 
   taskRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
 
   taskDate: {
     fontSize: 14,
+  },
+
+  taskTime: {
+    fontSize: 14
   },
 
   arrow: {
