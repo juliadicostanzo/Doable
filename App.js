@@ -140,7 +140,11 @@ export default function App() {
 
         <Tab.Screen name="Home">
           {(props) => (
-            <HomeScreen tasks={tasks} navigation={props.navigation}/>
+            <HomeScreen 
+              navigation={props.navigation} 
+              tasks={tasks} 
+              onToggleTaskComplete={toggleTaskCompleted}
+            />
           )}
         </Tab.Screen>
         

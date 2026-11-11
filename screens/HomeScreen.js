@@ -1,7 +1,7 @@
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TodayTask } from '../components/TodayTask.js';
 
-export function HomeScreen({ tasks, navigation }) {
+export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
 
   const currentDate = new Date();
 
@@ -21,6 +21,9 @@ export function HomeScreen({ tasks, navigation }) {
   const todayTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed == false);
   const todayCompletedTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed);
   
+  const allTasksCount = todayTasks.length + todayCompletedTasks.length;
+  const completedTaskPercent = allTasksCount === 0 ? '0%' : todayCompletedTasks.length / allTasksCount * 100 + '%';
+      
   return (
     <ScrollView contentContainerStyle={styles.pageContainer}>
       
@@ -32,17 +35,33 @@ export function HomeScreen({ tasks, navigation }) {
         <Text style={styles.dateText}>{todayDateString}</Text>
       </View>
 
+      {/* Progress Section */}
+      <View style={styles.progressContainer}>
+        <Text style={styles.sectionTitle}> Today's Progress</Text>
+
+        <View style={styles.progressBarBackground}>
+          <View style={{backgroundColor: '#2d68e9', height: '100%', width: completedTaskPercent}} />
+        </View>
+
+        {todayTasks.length === 0 ? (
+          <Text style={styles.noTasksText}>No tasks due today!</Text>
+        ) : (
+          <Text style={styles.progressText}> {todayCompletedTasks.length} of {allTasksCount} tasks complete </Text>
+        )}
+      </View>  
+
+
+      {/* OLD Progress Section */}
       <View style={styles.todaysProgressContainer}>
         <Text style={styles.todayTitle}>
           Today's Progress
         </Text>
 
         <View style={styles.progressBox}>
+          <Text>Progress bar</Text>
           {todayTasks.length === 0 ? (
               <Text style={styles.noTasksText}>No tasks due today!</Text>
-            ) : (<Text >{todayCompletedTasks.length} out of {todayTasks.length} tasks done</Text>)}
-          <Text>Progress bar</Text>
-          <Text>0 out of 3 tasks done</Text>
+            ) : (<Text >{todayCompletedTasks.length} out of {todayTasks.length} tasks done</Text>)} 
         </View>
       </View>
 
@@ -191,5 +210,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'gray',
     paddingVertical: 10,
+  },
+
+  progressContainer: {
+    backgroundColor: '#efefef',
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 25,
+  },
+
+  progressBarBackground: {
+    height: 12,
+    backgroundColor: '#dddddd',
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+
+  progressText: {
+    marginTop: 8,
+    fontSize: 14,
+  },
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });

@@ -7,7 +7,7 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
   const listTasks = tasks.filter(task => task.list === listName && task.completed == false);
   const listCompletedTasks = tasks.filter(task => task.list === listName && task.completed);
   const allTasksCount = listTasks.length + listCompletedTasks.length;
-  const completedTaskPercent = listCompletedTasks.length/allTasksCount * 100 + '%';
+  const completedTaskPercent = allTasksCount === 0 ? '0%' : listCompletedTasks.length/allTasksCount * 100 + '%';
   
   return (
     <ScrollView style={styles.pageContainer}>
