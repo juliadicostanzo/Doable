@@ -17,15 +17,32 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
+  // Hardcoded Tasks
   const [tasks, setTasks] = useState([
     {id: "1", title: "Lab 7", list: "Mobile", dueDate: "11/9/26", time: "11:59 PM", location: "", notes: "", completed: true},
     {id: "2", title: "Lab 8", list: "Mobile", dueDate: "11/10/26", time: "11:59 PM", location: "", notes: "", completed: false},
     {id: "3", title: "Lab 9", list: "Mobile", dueDate: "11/11/26", time: "11:59 PM", location: "", notes: "", completed: false},
     {id: "4", title: "Lab 10", list: "Mobile", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false},
   ]);
-
   const [nextId, setNextId] = useState(3);
 
+  // Hardcoded Lists
+  const [lists, setLists] = useState([
+    { id: "1", name: "Mobile", color: "red" },
+    { id: "2", name: "Networks", color: "blue" },
+    { id: "3", name: "Internship", color: "green" }
+  ]);
+
+  const [nextListId, setNextListId] = useState(4);
+
+  // Hardcoded DefaultLists
+  const [defaultLists, setDefaultLists] = useState([
+    { id: "1", name: "Archived"},
+    { id: "2", name: "Deleted Lists"},
+    { id: "3", name: "Deleted Tasks"}
+  ]);
+
+  // Function to addTask
   const addTask = (newTask) => { //newTask = task object from addTaskScreen.js
     const taskToAdd = { //creates final version of task 
       id: String(nextId), // Convert the nextId to a string
@@ -36,28 +53,15 @@ export default function App() {
     setNextId(nextId + 1); // increases ID counter
   };
 
-  const [lists, setLists] = useState([
-    { id: "1", name: "Mobile", color: "red" },
-    { id: "2", name: "Networks", color: "blue" },
-    { id: "3", name: "Internship", color: "green" }
-  ]);
-
-  const [nextListId, setNextListId] = useState(4);
-
-  const addList = (newList) => {
-    const listToAdd = {
-      id: String(nextListId), 
-      ...newList
+  // Function to addList
+  const addList = (newList) => { //newList = task object from ListsScreen.js
+    const listToAdd = { //creates final version of list 
+      id: String(nextListId), // Convert the nextListId to a string
+      ...newList //copies all other properties from newList into listToAdd
     };
     setLists([...lists, listToAdd]);
     setNextListId(nextListId + 1);
   };
-
-  const [defaultLists, setDefaultLists] = useState([
-    { id: "1", name: "Archived"},
-    { id: "2", name: "Deleted Lists"},
-    { id: "3", name: "Deleted Tasks"}
-  ]);
 
   function ListsNavigator() {
     return (
