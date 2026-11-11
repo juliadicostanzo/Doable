@@ -6,30 +6,38 @@ export function ListDetailScreen({ route, navigation, tasks }) {
 
   const listTasks = tasks.filter(task => task.list === listName && task.completed == false);
   const listCompletedTasks = tasks.filter(task => task.list === listName && task.completed);
-  
+  const completedTaskPercent = listCompletedTasks.length/listTasks.length * 100 + '%';
+
   return (
     <ScrollView style={styles.pageContainer}>
+      
+      {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="black" />
         <Text> Back </Text>
       </TouchableOpacity>
 
+      {/* List Title */}
       <Text style={styles.pageTitle}>{listName}</Text>
- 
+
+      {/* Progress Section */}
       <View style={styles.progressContainer}>
         <Text style={styles.sectionTitle}>Progress</Text>
 
         <View style={styles.progressBarBackground}>
-          <View style={[styles.progressBarFill, {backgroundColor: listColor}]} />
+          <View style={{backgroundColor: listColor, height: '100%', width: completedTaskPercent}} />
         </View>
 
-        <Text style={styles.progressText}> 4 of 5 tasks complete </Text>
+        <Text style={styles.progressText}> {listCompletedTasks.length} of {listTasks.length} tasks complete </Text>
       </View>
-      
+
+      {/* Task Section */}
       <Text style={styles.sectionTitle}>Tasks</Text>
-      
       <View style={styles.taskContainer}>
-        {listTasks.map((task, index) => (
+        {listTasks.length === 0 ? (
+          <Text style={styles.noTasksText}>No tasks yet</Text>
+        ) : (
+        listTasks.map((task, index) => (
           <View key={task.id}>
             <TouchableOpacity style={styles.taskRow}>
               <Text style={styles.taskTitle}>{task.title}</Text>
@@ -44,7 +52,33 @@ export function ListDetailScreen({ route, navigation, tasks }) {
               <View style={styles.divider} />
             )}
           </View>
-        ))}
+        ))
+      )}
+      </View>
+
+      {/* Completed Task Section */}
+      <Text style={styles.sectionTitle}>Completed Tasks</Text>
+      
+      <View style={styles.taskContainer}>
+        {listCompletedTasks.length === 0 ? (
+          <Text style={styles.noTasksText}>No completed tasks yet</Text>
+        ) : (
+        listCompletedTasks.map((task, index) => (
+          <View key={task.id}>
+            <TouchableOpacity style={styles.taskRow}>
+              <Text style={styles.taskTitle}>{task.title}</Text>
+
+              <View style={styles.taskRight}>
+                <Text style={styles.taskDate}>{task.dueDate}</Text>
+                <Text style={styles.taskTime}>{task.time}</Text>
+              </View>
+            </TouchableOpacity>
+            {index < listCompletedTasks.length - 1 && (
+              <View style={styles.divider} />
+            )}
+          </View>
+        ))
+      )}
       </View>
 
       <TouchableOpacity style={styles.deletedList}>
@@ -57,27 +91,24 @@ export function ListDetailScreen({ route, navigation, tasks }) {
   );
 }
 const styles = StyleSheet.create({
+  // Page Container
   pageContainer: {
     backgroundColor: 'white',
     paddingHorizontal: 20, //everything on page is 20 pixels from horizontal edge
     paddingTop: 60,
     paddingBottom: 40,
   },
+
   pageTitle: {
     fontSize: 34,
     textAlign: 'center',
     fontWeight: 'bold',
     marginBottom: 15,
   },
+
    backButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
-  },
-
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
     marginBottom: 10,
   },
 
@@ -95,14 +126,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 
-  progressBarFill: {
-    width: '80%',
-    height: '100%',
-  },
-
   progressText: {
     marginTop: 8,
     fontSize: 14,
+  },
+
+  // Progress, Task & Completed Tasks
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 
   taskContainer: {
@@ -110,6 +143,7 @@ const styles = StyleSheet.create({
     borderColor: '#cccccc',
     borderRadius: 12,
     padding: 12,
+    marginBottom: 25,
   },
 
   taskRow: {
@@ -150,7 +184,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 5,
     padding: 15,
     borderWidth: 1,
     borderColor: '#cccccc',
@@ -160,6 +194,12 @@ const styles = StyleSheet.create({
 
   deletedText: {
     fontSize: 16,
+  },
+
+  noTasksText: {
+    textAlign: 'center',
+    color: 'gray',
+    paddingVertical: 8,
   },
 
 });
