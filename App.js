@@ -19,10 +19,10 @@ export default function App() {
 
   // Hardcoded Tasks
   const [tasks, setTasks] = useState([
-    {id: "1", title: "Lab 7", list: "Mobile", dueDate: "11/9/26", time: "11:59 PM", location: "", notes: "", completed: true},
-    {id: "2", title: "Lab 8", list: "Mobile", dueDate: "11/10/26", time: "11:59 PM", location: "", notes: "", completed: false},
-    {id: "3", title: "Lab 9", list: "Mobile", dueDate: "11/11/26", time: "11:59 PM", location: "", notes: "", completed: false},
-    {id: "4", title: "Lab 10", list: "Mobile", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "1", title: "Lab 7", list: "Mobile", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "2", title: "Lab 8", list: "Mobile", dueDate: "11/13/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "3", title: "Lab 9", list: "Mobile", dueDate: "11/14/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "4", title: "Lab 10", list: "Mobile", dueDate: "11/15/26", time: "11:59 PM", location: "", notes: "", completed: false},
   ]);
   const [nextId, setNextId] = useState(3);
 
@@ -43,26 +43,27 @@ export default function App() {
   ]);
 
   // Function to addTask
-  const addTask = (newTask) => { //newTask = task object from addTaskScreen.js
-    const taskToAdd = { //creates final version of task 
+  const addTask = (newTask) => { // newTask = task object from addTaskScreen.js
+    const taskToAdd = { // Creates final version of task 
       id: String(nextId), // Convert the nextId to a string
-      ...newTask, //copies all other properties from newTask into taskToAdd
+      ...newTask, // Copies all other properties from newTask into taskToAdd
       completed: false
     };
-    setTasks([...tasks, taskToAdd]); // updates tasks array
-    setNextId(nextId + 1); // increases ID counter
+    setTasks([...tasks, taskToAdd]); // Updates tasks array
+    setNextId(nextId + 1); // Increases ID counter
   };
 
   // Function to addList
-  const addList = (newList) => { //newList = task object from ListsScreen.js
-    const listToAdd = { //creates final version of list 
+  const addList = (newList) => { // newList = task object from ListsScreen.js
+    const listToAdd = { // Creates final version of list 
       id: String(nextListId), // Convert the nextListId to a string
-      ...newList //copies all other properties from newList into listToAdd
+      ...newList // Copies all other properties from newList into listToAdd
     };
-    setLists([...lists, listToAdd]);
-    setNextListId(nextListId + 1);
+    setLists([...lists, listToAdd]); // Updates lists array
+    setNextListId(nextListId + 1); // Increases ID counter
   };
 
+  // Function to toggleTaskCompleted
   const toggleTaskCompleted = (taskId) => { // taskId = task id of the task click
     setTasks( // Updates tasks array
       tasks.map((task) => // Loop through all tasks 
@@ -72,6 +73,7 @@ export default function App() {
       )
     );
   };
+
 
   function ListsNavigator() {
     return (
@@ -104,9 +106,9 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          headerShown: false, //hides built in header
+          headerShown: false, // Hides built in header
           
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: ({ focused, color }) => {
             let iconName;
 
             if (route.name === 'Home') {
@@ -126,11 +128,7 @@ export default function App() {
             }
 
             return (
-              <Ionicons
-                name={iconName}
-                size={22}
-                color={color}
-              />
+              <Ionicons name={iconName} size={22} color={color}/>
             );
           },
           tabBarActiveTintColor: '#2d68e9',
@@ -152,12 +150,14 @@ export default function App() {
         
         <Tab.Screen name="Add Task">
           {() => (
+            // AddTaskScreen is passed the addTask function as a prop
             <AddTaskScreen onAddTask={addTask}/>
           )}
         </Tab.Screen> 
         
         <Tab.Screen name="All Tasks">
           {() => (
+            // AllTasksScreen is passed the tasks array as a prop
             <AllTasksScreen tasks={tasks} />
           )}
         </Tab.Screen>

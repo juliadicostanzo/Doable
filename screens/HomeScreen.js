@@ -1,5 +1,7 @@
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TodayTask } from '../components/TodayTask.js';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
 
@@ -25,7 +27,7 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
   const completedTaskPercent = allTasksCount === 0 ? '0%' : todayCompletedTasks.length / allTasksCount * 100 + '%';
       
   return (
-    <ScrollView contentContainerStyle={styles.pageContainer}>
+    <ScrollView style={styles.pageContainer}>
       
       <View style={styles.logoContainer}>
         <Text style={styles.logo}>Doable</Text>
@@ -49,59 +51,45 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
           <Text style={styles.progressText}> {todayCompletedTasks.length} of {allTasksCount} tasks complete </Text>
         )}
       </View>  
+      {/* Progress Section End */}
 
-
-      {/* OLD Progress Section */}
-      <View style={styles.todaysProgressContainer}>
-        <Text style={styles.todayTitle}>
-          Today's Progress
-        </Text>
-
-        <View style={styles.progressBox}>
-          <Text>Progress bar</Text>
-          {todayTasks.length === 0 ? (
-              <Text style={styles.noTasksText}>No tasks due today!</Text>
-            ) : (<Text >{todayCompletedTasks.length} out of {todayTasks.length} tasks done</Text>)} 
-        </View>
+      {/* Task Section */}
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}> Today's Tasks </Text>
+        <TouchableOpacity style={styles.viewAllContainer} onPress={() => navigation.navigate('All Tasks')}>
+          <Text style={styles.viewAllText}>View All</Text>
+          <Text style={styles.viewAllArrow}>›</Text>
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.space}/>
-
-      <View style={styles.todaysTasksContainer}>
-
-        <View style={styles.sectionHeader}>
-          <Text style={styles.todayTitle}> Today's Tasks </Text>
-          <TouchableOpacity style={styles.viewAllContainer} onPress={() => navigation.navigate('All Tasks')}>
-            <Text style={styles.viewAllText}>View All</Text>
-            <Text style={styles.viewAllArrow}>›</Text>
-            
-          </TouchableOpacity>
-        </View>
-
-          <View style={styles.todayTaskBox}>
-            {todayTasks.length === 0 ? (
-              <Text style={styles.noTasksText}>No tasks due today!</Text>
-            ) : (
-            todayTasks.map((task, index) => (
-              <View key={task.id}>
-                <TouchableOpacity>
+        <View style={styles.taskContainer}>
+          {todayTasks.length === 0 ? (
+            <Text style={styles.noTasksText}>No tasks due today!</Text>
+          ) : (
+          todayTasks.map((task, index) => (
+            <View key={task.id}>
+              <TouchableOpacity style={styles.taskRow} onPress={() => onToggleTaskComplete(task.id)}>
+                  
+                <Ionicons name="radio-button-off" size={24} color= '#2d68e9' style={styles.completeButton}/>
+                  
+                <View style={styles.taskContent}>
                   <TodayTask
                     title={task.title}
                     list={task.list}
                     time={task.time}
                   />
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
 
-                {index < todayTasks.length - 1 && (
-                  <View style={styles.divider} />
-                )}
-              </View>
-            ))
+              {index < todayTasks.length - 1 && (
+                <View style={styles.divider} />
+              )}
+            </View>
+          ))
           )}
-          </View>
-      </View>
-
-      <View style={styles.space}/>
+        </View>
+        {/* Task Section End */}
+      
       
 
         {/* <StatusBar style="auto" /> */}
@@ -117,6 +105,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
 
+  // Logo
   logoContainer: {
     alignItems: 'center',
     marginBottom: 20,   
@@ -129,6 +118,7 @@ const styles = StyleSheet.create({
     color: '#2d68e9',
   },
 
+  // Date
   dateContainer: {
     marginBottom: 10,   
   },
@@ -137,81 +127,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-  todaysProgressContainer: {
-    backgroundColor: '#efefef',
-    padding: 10,
-    borderColor: 'black',
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-
-  progressBox: {
-    alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 12,
-    width: '100%',
-  },
-
-  space: {
-    paddingTop: 10
-  },
-
-  todaysTasksContainer: {
-    //backgroundColor: '#f8d5d3',
-    padding: 10,
-    borderColor: '#ef5752',
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-
-  todayTitle: {
+  // Today's Progress, To Do's
+  sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
   },
 
-  todayTaskBox: {
-    borderColor: '#ef5752',
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 12,
-    width: '100%',
-  },
-
-  divider: {
-    height: 1,
-    backgroundColor: '#4e4c4c',
-    margin: 8,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  viewAllContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  viewAllText: {
-    fontSize: 14,
-    marginRight: 6,
-  },
-
-  viewAllArrow: {
-    fontSize: 24,
-  },
-
-  noTasksText: {
-    textAlign: 'center',
-    fontSize: 16,
-    color: 'gray',
-    paddingVertical: 10,
-  },
-
+  //Progress
   progressContainer: {
     backgroundColor: '#efefef',
     borderRadius: 15,
@@ -226,14 +149,65 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 
+  noTasksText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'gray',
+    paddingVertical: 10,
+  },
+
   progressText: {
     marginTop: 8,
     fontSize: 14,
   },
 
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  // Today's Tasks & View all container
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
+
+  // View all >
+  viewAllContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  viewAllText: {
+    fontSize: 14,
+    marginRight: 6,
+  },
+
+  viewAllArrow: {
+    fontSize: 24,
+  },
+
+  taskContainer: {
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 25,
+  },
+
+  taskRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  completeButton: {
+    marginRight: 10,
+  },
+
+  taskContent: {
+    flex: 1,
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: '#4e4c4c',
+    margin: 8,
+  },
+  
 });

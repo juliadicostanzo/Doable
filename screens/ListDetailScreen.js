@@ -33,7 +33,7 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       </View>
 
       {/* Task Section */}
-      <Text style={styles.sectionTitle}>Tasks</Text>
+      <Text style={styles.sectionTitle}>To Do</Text>
       <View style={styles.taskContainer}>
         {listTasks.length === 0 ? (
           <Text style={styles.noTasksText}>No tasks</Text>
@@ -60,7 +60,7 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       </View>
 
       {/* Completed Task Section */}
-      <Text style={styles.sectionTitle}>Completed Tasks</Text>
+      <Text style={styles.sectionTitle}>Done</Text>
       
       <View style={styles.taskContainer}>
         {listCompletedTasks.length === 0 ? (

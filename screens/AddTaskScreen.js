@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export function AddTaskScreen({ onAddTask }) {
 
@@ -51,7 +51,7 @@ export function AddTaskScreen({ onAddTask }) {
   };
 
   return (
-    <View style={styles.pageContainer}>
+    <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>Add Task</Text>
       <Text style={styles.inputBoxLabel}>Task name</Text>
       
@@ -100,7 +100,7 @@ export function AddTaskScreen({ onAddTask }) {
         <Text style={styles.saveTaskButtonText}>Save Task</Text>
       </TouchableOpacity>
 
-    </View>
+    </ScrollView>
   );
 }
 
