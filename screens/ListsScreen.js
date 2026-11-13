@@ -163,6 +163,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
+  listName: {
+    fontSize: 18,
+  },
+
   arrowContainer: {
     alignItems: 'flex-end',
   },
@@ -190,7 +194,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'space-between',
     alignItems: 'center',
-    
   },
 
   modalBackground: {

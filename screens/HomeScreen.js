@@ -1,9 +1,23 @@
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TodayTask } from '../components/TodayTask.js';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { useFonts } from 'expo-font';
+import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito';
+//import { DancingScript_500Medium } from '@expo-google-fonts/dancing-script';
+import { Satisfy_400Regular } from '@expo-google-fonts/satisfy';
+import { PatrickHand_400Regular } from '@expo-google-fonts/patrick-hand';
 
 export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
+
+  const [fontsLoaded] = useFonts({
+    Nunito_800ExtraBold,
+    Satisfy_400Regular,
+    PatrickHand_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const currentDate = new Date();
 
@@ -108,13 +122,14 @@ const styles = StyleSheet.create({
   // Logo
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 20,   
+    marginBottom: 15,   
   },
 
   logo: {
-    fontSize: 40,
+    fontSize: 55,
     //fontFamily: 'sacramento',
-    fontWeight: 'bold',
+    fontFamily: 'Nunito_800ExtraBold',
+    //fontWeight: 'bold',
     color: '#2d68e9',
   },
 
@@ -124,7 +139,9 @@ const styles = StyleSheet.create({
   },
 
   dateText: {
-    fontSize: 18,
+    fontSize: 26,
+    fontFamily: 'Satisfy_400Regular',
+    //fontFamily: 'PatrickHand_400Regular',
   },
 
   // Today's Progress, To Do's
