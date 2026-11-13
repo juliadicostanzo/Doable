@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
-export function AddTaskScreen({ onAddTask }) {
+export function AddTaskScreen({ onAddTask, lists }) {
 
   const [title, setTitle] = useState('');
   const [list, setList] = useState('');
@@ -62,11 +63,29 @@ export function AddTaskScreen({ onAddTask }) {
       />
 
       <Text style={styles.inputBoxLabel}>List</Text>
-      <TextInput style={styles.taskInputBox}
+      <TextInput
+        style={styles.taskInputBox}
         placeholder="Select a List"
         value={list}
         onChangeText={setList}
       />
+      {/*
+      <View style={styles.pickerContainer}>
+        <Picker selectedValue={list} onValueChange={(itemValue) => setList(itemValue)}>
+          <Picker.Item
+            label="Select a List"
+            value=""
+          />
+          {lists.map((item) => (
+            <Picker.Item
+              key={item.id}
+              label={item.name}
+              value={item.name}
+            />
+          ))}
+        </Picker>
+      </View>
+      */}
 
       <Text style={styles.inputBoxLabel}>Due Date</Text>
       <TextInput style={styles.taskInputBox}
@@ -146,5 +165,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  pickerContainer: {
+    borderColor: '#000000',
+    borderWidth: 1,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
 });

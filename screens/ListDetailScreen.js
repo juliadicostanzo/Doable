@@ -32,6 +32,8 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
         <Text style={styles.progressText}> {listCompletedTasks.length} of {allTasksCount} tasks complete </Text>
       </View>
 
+      {/* Task or Calendar View Button Section */}
+
       {/* Task Section */}
       <Text style={styles.sectionTitle}>To Do</Text>
       <View style={styles.taskContainer}>

@@ -48,7 +48,7 @@ export function ListsScreen({ navigation, lists, onAddList}) {
             })
           }
         >
-          <Text style={styles.listName}>{list.name}</Text>
+          <Text style={[styles.listName, {color: list.color}]}>{list.name}</Text>
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       ))}

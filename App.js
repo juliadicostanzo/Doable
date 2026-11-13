@@ -158,14 +158,16 @@ export default function App() {
         
         <Tab.Screen name="Add Task">
           {() => (
-            // AddTaskScreen is passed the addTask function as a prop
-            <AddTaskScreen onAddTask={addTask}/>
+            // AddTaskScreen is passed the addTask function and lists array as props
+            <AddTaskScreen 
+            onAddTask={addTask}
+            lists={lists}/>
           )}
         </Tab.Screen> 
         
         <Tab.Screen name="All Tasks">
           {() => (
-            // AllTasksScreen is passed the tasks array, lists array, and toggleTaskCompleted funciton a prop
+            // AllTasksScreen is passed the tasks array, lists array, and toggleTaskCompleted funciton props
             <AllTasksScreen 
               tasks={tasks} 
               lists={lists}
