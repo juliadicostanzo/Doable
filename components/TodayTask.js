@@ -7,10 +7,10 @@ export function TodayTask({ title, list, time }) {
     
       <View>
         <Text style={styles.taskTitle}>{title}</Text>
-        <Text style={styles.taskSubtitle}>{list}</Text>
+        <Text style={styles.taskList}>{list}</Text>
       </View>
 
-      <View style={styles.rightSide}>
+      <View style={styles.taskRight}>
         <Text style={styles.taskTime}>{time}</Text>
         {/* <Text style={styles.arrow}>›</Text> */}
       </View>
@@ -26,18 +26,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  rightSide: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  
   taskTitle: {
     fontSize: 16,
   },
 
-  taskSubtitle: {
+  taskList: {
     fontSize: 14,
     marginTop: 2,
+  },
+
+  taskRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   
   taskTime: {

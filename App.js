@@ -19,12 +19,20 @@ export default function App() {
 
   // Hardcoded Tasks
   const [tasks, setTasks] = useState([
-    {id: "1", title: "Lab 7", list: "Mobile", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "1", title: "Lab 7", list: "Mobile", dueDate: "11/16/26", time: "11:59 PM", location: "", notes: "", completed: false},
     {id: "2", title: "Lab 8", list: "Mobile", dueDate: "11/13/26", time: "11:59 PM", location: "", notes: "", completed: false},
     {id: "3", title: "Lab 9", list: "Mobile", dueDate: "11/14/26", time: "11:59 PM", location: "", notes: "", completed: false},
-    {id: "4", title: "Lab 10", list: "Mobile", dueDate: "11/15/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "4", title: "Lab 10", list: "Mobile", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "5", title: "PS1", list: "Networks", dueDate: "11/13/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "6", title: "PS2", list: "Networks", dueDate: "11/16/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "7", title: "PS3", list: "Networks", dueDate: "11/18/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "8", title: "PS4", list: "Networks", dueDate: "11/20/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "9", title: "Lab 7", list: "Internship", dueDate: "11/16/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "10", title: "Lab 8", list: "Internship", dueDate: "11/13/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "11", title: "Lab 9", list: "Internship", dueDate: "11/14/26", time: "11:59 PM", location: "", notes: "", completed: false},
+    {id: "12", title: "Lab 10", list: "Internship", dueDate: "11/12/26", time: "11:59 PM", location: "", notes: "", completed: false},
   ]);
-  const [nextId, setNextId] = useState(3);
+  const [nextId, setNextId] = useState(13);
 
   // Hardcoded Lists
   const [lists, setLists] = useState([
@@ -157,8 +165,12 @@ export default function App() {
         
         <Tab.Screen name="All Tasks">
           {() => (
-            // AllTasksScreen is passed the tasks array as a prop
-            <AllTasksScreen tasks={tasks} />
+            // AllTasksScreen is passed the tasks array, lists array, and toggleTaskCompleted funciton a prop
+            <AllTasksScreen 
+              tasks={tasks} 
+              lists={lists}
+              onToggleTaskComplete={toggleTaskCompleted}
+            />
           )}
         </Tab.Screen>
         

@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
   },
 
   taskTime: {
-    fontSize: 14
+    fontSize: 14,
+    marginTop: 2,
   },
 
   arrow: {

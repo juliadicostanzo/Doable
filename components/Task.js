@@ -1,22 +1,30 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-
-export function Task({ title, list, date, time }) {
+export function Task({ title, list, date, time, color, completed, onPress }) {
+  
   return (
-    
-    <View style={styles.taskRow}>
-
-      <View>
+    <TouchableOpacity style={styles.taskRow} onPress={onPress}>
+      
+      {/* Button */}
+      <Ionicons
+        name={completed ? "radio-button-on" : "radio-button-off"}
+        size={24}
+        color={color}
+        style={styles.completeButton}
+      />
+      
+      <View style={styles.taskLeft}>
         <Text style={styles.taskTitle}>{title}</Text>
         <Text style={styles.taskList}>{list}</Text>
       </View>
 
-      <View style={styles.dateTimeContainer}>
+      <View style={styles.taskRight}>
         <Text style={styles.taskDate}>{date}</Text>
         <Text style={styles.taskTime}>{time}</Text>
       </View>
 
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -25,6 +33,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+
+  taskLeft: {
+    flex: 1,
   },
   
   taskTitle: {
@@ -37,21 +49,20 @@ const styles = StyleSheet.create({
   },
 
   taskRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  dateTime: {
     alignItems: 'flex-end',
-  },
-  
-  taskTime: {
-    fontSize: 14,
-    marginRight: 2,
   },
 
   taskDate: {
     fontSize: 14,
+  },
+
+  taskTime: {
+    fontSize: 14,
+    marginTop: 2,
+  },
+
+  completeButton: {
+    marginRight: 10,
   },
 
 

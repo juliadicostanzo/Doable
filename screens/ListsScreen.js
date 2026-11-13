@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    
   },
 
   modalBackground: {
