@@ -60,7 +60,7 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
         </View>
 
         {todayTasks.length === 0 ? (
-          <Text style={styles.noTasksText}>No tasks due today!</Text>
+          <Text style={styles.progressText}>No tasks due today!</Text>
         ) : (
           <Text style={styles.progressText}> {todayCompletedTasks.length} of {allTasksCount} tasks complete </Text>
         )}

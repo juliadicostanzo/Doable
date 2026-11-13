@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useState } from 'react';
 
 export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete }) {
   const { listName, listColor } = route.params;
+
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const listTasks = tasks.filter(task => task.list === listName && task.completed == false);
   const listCompletedTasks = tasks.filter(task => task.list === listName && task.completed);
@@ -62,13 +65,23 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       </View>
 
       {/* Completed Task Section */}
-      <Text style={styles.sectionTitle}>Done</Text>
-      
+      {/* Only show if there is a completed task */}
+      {listCompletedTasks.length > 0 && (
+      <>
+        <View style={styles.completedHeader}>
+          <Text style={styles.sectionTitle}>Done</Text>
+          
+          {/* toggle Show and Hide completed tasks */}
+          <TouchableOpacity onPress={() => setShowCompleted(!showCompleted)}>
+            <Text style={[styles.hideText, {color: listColor}]}>
+              {showCompleted ? 'Hide' : 'Show'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+      {showCompleted && (
       <View style={styles.taskContainer}>
-        {listCompletedTasks.length === 0 ? (
-          <Text style={styles.noTasksText}>No completed tasks yet</Text>
-        ) : (
-        listCompletedTasks.map((task, index) => (
+        {listCompletedTasks.map((task, index) => (
           <View key={task.id}>
             {/* Button */}
             <TouchableOpacity style={styles.taskRow} onPress={() => onToggleTaskComplete(task.id)}>
@@ -85,9 +98,11 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
               <View style={styles.divider} />
             )}
           </View>
-        ))
-      )}
+        ))}
       </View>
+      )}
+      </>
+      )}
 
       <TouchableOpacity style={styles.deletedList}>
         <Text style={styles.deletedText}>Deleted Tasks</Text>
@@ -186,12 +201,25 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 
+  completedHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  hideText: {
+    fontSize: 16,
+    color: '#2d68e9',
+    marginBottom: 10,
+    //fontWeight: 'bold',
+    marginRight: 10,
+  },
+
   divider: {
     height: 1,
     backgroundColor: '#dddddd',
     marginVertical: 10,
   },
-
 
   deletedList: {
     flexDirection: 'row',

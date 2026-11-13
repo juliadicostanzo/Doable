@@ -12,14 +12,30 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
     String(currentDate.getDate()) + '/' +
     String(currentDate.getFullYear()).slice(-2);
 
-  // Func to convert date string into date object
-  const convertToDate = (dateString) => {
+  // Func to convert date and time string into date and time object
+  const convertToDateTime = (dateString, timeString) => {
     const [month, day, year] = dateString.split('/');
+
+    const [time, period] = timeString.split(' ');
+    let [hour, minute] = time.split(':');
+
+    hour = Number(hour);
+    minute = Number(minute);
+
+    if (period.toUpperCase() === 'PM' && hour !== 12) {
+      hour += 12;
+    }
+
+    if (period.toUpperCase() === 'AM' && hour === 12) {
+      hour = 0;
+    }
 
     return new Date(
       2000 + Number(year),
       Number(month) - 1,
-      Number(day)
+      Number(day),
+      hour,
+      minute
     );
   };
 
@@ -28,7 +44,13 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
   
   // Sort uncompeleted tasks by date 
   const tasksByDate = [...uncompletedTasks].sort((a, b) => { 
-    return convertToDate(a.dueDate) - convertToDate(b.dueDate);
+    return convertToDateTime(a.dueDate, a.time) - convertToDateTime(b.dueDate, b.time);
+  });
+
+  // Overdue Tasks
+  const overDueTasks = tasksByDate.filter((task) => {
+    const taskDate = convertToDateTime(task.dueDate, task.time);
+    return taskDate < currentDate;
   });
 
   // Tasks due Today
@@ -40,7 +62,7 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
   
   // Tasks due by the end of the week
   const tasksDueThisWeek = tasksByDate.filter((task) => {
-    const taskDate = convertToDate(task.dueDate);
+    const taskDate = convertToDateTime(task.dueDate, task.time);
     return taskDate >= currentDate && taskDate <= endOfWeek;
   });
   
@@ -50,7 +72,7 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
   
   // Tasks due by the end of the week
   const tasksDueAfterThisWeek = tasksByDate.filter((task) => {
-    const taskDate = convertToDate(task.dueDate);
+    const taskDate = convertToDateTime(task.dueDate, task.time);
     return taskDate > endOfWeek && taskDate <= afterEndOfWeek;
   });
 
@@ -88,6 +110,41 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
         })
       )}
       </View>
+
+      {/*
+      // OverDue Tasks - only show section if there is at least one overdue task
+      {overDueTasks.length > 0 && (
+      <>
+        <Text style={styles.sectionTitle}>Overdue</Text>
+
+        <View style={styles.taskBox}>
+          {overDueTasks.map((task, index) => {
+         
+          // Find the Task's list color
+          const taskList = lists.find(list => list.name === task.list);
+
+          return (
+            <View key={task.id}>
+              <Task
+                title={task.title}
+                list={task.list}
+                date={task.dueDate}
+                time={task.time}
+                color={taskList.color}
+                completed={task.completed}
+                onPress={() => onToggleTaskComplete(task.id)}
+              />
+
+              {index < overDueTasks.length - 1 && (
+                <View style={styles.divider} />
+              )}
+            </View>
+          );
+          })}
+        </View>
+      </>
+    )}
+    */}
 
       {/* Due Today */}
       <Text style={styles.sectionTitle}> Due Today </Text>
