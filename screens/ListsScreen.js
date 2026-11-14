@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput } from 'react-native';
 import { useState } from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export function ListsScreen({ navigation, lists, onAddList}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,7 +34,7 @@ export function ListsScreen({ navigation, lists, onAddList}) {
         <TouchableOpacity style={styles.addListButton} 
           onPress={() => setModalVisible(true)}
         >
-          <Text style={styles.addListText}>+</Text>
+          <Ionicons name="add-circle" size={40} color='#2d68e9'/>
         </TouchableOpacity>
       </View>
 
@@ -48,26 +49,31 @@ export function ListsScreen({ navigation, lists, onAddList}) {
             })
           }
         >
-          <Text style={[styles.listName, {color: list.color}]}>{list.name}</Text>
-          <Text style={styles.arrow}>›</Text>
+          <View style={styles.listNameContainer}>
+            <Ionicons name="ellipse" size={22} color={list.color} style={styles.listIcon}/>
+            <Text style={styles.listName}>{list.name}</Text>
+          </View>
+          <Ionicons name="chevron-forward-outline" size={22} color='black'/>
         </TouchableOpacity>
       ))}
 
       <TouchableOpacity style={styles.listRow}>
-        <View>
+        <View style={styles.listNameContainer}>
+          <Ionicons name="archive-outline" size={22} color='black' style={styles.listIcon}/>
           <Text style={styles.listName}>Archived Lists</Text>
         </View>
         <View style={styles.arrowContainer}>
-          <Text style={styles.arrow}>›</Text>
+          <Ionicons name="chevron-forward-outline" size={22} color='black' />
         </View>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.listRow}>
-        <View>
+        <View style={styles.listNameContainer}>
+          <Ionicons name="trash-outline" size={22} color='black' style={styles.listIcon}/>
           <Text style={styles.listName}>Deleted Lists</Text>
         </View>
         <View style={styles.arrowContainer}>
-          <Text style={styles.arrow}>›</Text>
+          <Ionicons name="chevron-forward-outline" size={22} color='black'/>
         </View>
       </TouchableOpacity>
 
@@ -76,7 +82,7 @@ export function ListsScreen({ navigation, lists, onAddList}) {
           <Text style={styles.listName}>Deleted Tasks</Text>
         </View>
         <View style={styles.arrowContainer}>
-          <Text style={styles.arrow}>›</Text>
+          <Ionicons name="chevron-forward-outline" size={22} color='black'/>
         </View>
       </TouchableOpacity>
 
@@ -163,24 +169,31 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
+  listNameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+
+  listIcon: {
+    marginRight: 10,
+  },
+
   listName: {
-    fontSize: 18,
+    fontSize: 16,
+    flex: 1,
   },
 
   arrowContainer: {
     alignItems: 'flex-end',
   },
-  arrow: {
-    fontSize: 28,
-  },
+  
   addListButton: {
     position: 'absolute',
     right: 3,
     top: 1,
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: '#2d68e9',
     justifyContent: 'center',
     alignItems: 'center',
   },
