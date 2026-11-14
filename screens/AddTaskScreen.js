@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { Dropdown } from 'react-native-element-dropdown';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export function AddTaskScreen({ onAddTask, lists }) {
 
@@ -51,6 +52,24 @@ export function AddTaskScreen({ onAddTask, lists }) {
     setNotes('');
   };
 
+  const listOptions = lists.map((item) => ({
+    label: item.name,
+    value: item.name,
+    color: item.color
+  }));
+
+  const renderListItem = (item) => {
+    return (
+      <View style={styles.dropdownItem}>
+        <Ionicons name="ellipse" size={14} color={item.color} style={styles.listIcon}/>
+
+        <Text style={styles.dropdownItemText}>
+          {item.label}
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>Add Task</Text>
@@ -62,30 +81,38 @@ export function AddTaskScreen({ onAddTask, lists }) {
         onChangeText={setTitle}
       />
 
+      
       <Text style={styles.inputBoxLabel}>List</Text>
-      <TextInput
-        style={styles.taskInputBox}
+      <Dropdown
+        style={styles.dropdown}
+        placeholderStyle={styles.placeholderStyle}
+        data={listOptions}
+        labelField="label"
+        valueField="value"
         placeholder="Select a List"
         value={list}
-        onChangeText={setList}
+        
+        // render color dot after list is selected
+        renderLeftIcon={() => {
+          const selectedList = lists.find(
+            item => item.name === list
+          );
+
+          if (!selectedList) {
+            return null;
+          }
+
+          return (
+            <Ionicons name="ellipse" size={14} color={selectedList.color} style={styles.listIcon} />
+          );
+        }}
+
+        renderItem={renderListItem}
+        onChange={(item) => {
+          setList(item.value);
+        }}
       />
-      {/*
-      <View style={styles.pickerContainer}>
-        <Picker selectedValue={list} onValueChange={(itemValue) => setList(itemValue)}>
-          <Picker.Item
-            label="Select a List"
-            value=""
-          />
-          {lists.map((item) => (
-            <Picker.Item
-              key={item.id}
-              label={item.name}
-              value={item.name}
-            />
-          ))}
-        </Picker>
-      </View>
-      */}
+      
 
       <Text style={styles.inputBoxLabel}>Due Date</Text>
       <TextInput style={styles.taskInputBox}
@@ -167,10 +194,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  pickerContainer: {
+  dropdown: {
     borderColor: '#000000',
     borderWidth: 1,
     borderRadius: 12,
-    overflow: 'hidden',
+    paddingHorizontal: 12,
+    height: 45,
+  },
+
+  placeholderStyle: {
+    color: '#888888',
+    fontSize: 16,
+  },
+
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+  },
+
+  listIcon: {
+    marginRight: 10,
+  },
+
+  dropdownItemText: {
+    fontSize: 16,
   },
 });
