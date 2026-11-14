@@ -33,9 +33,46 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
     String(currentDate.getDate())+ '/' +
     String(currentDate.getFullYear()).slice(-2);
 
-  //filter only tasks due today
-  const todayTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed == false);
-  const todayCompletedTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed);
+  const convertToDateTime = (dateString, timeString) => {
+    const [month, day, year] = dateString.split('/');
+
+    const [time, period] = timeString.trim().split(/\s+/);
+    let [hour, minute] = time.split(':');
+
+    hour = Number(hour);
+    minute = Number(minute);
+
+    if (period.toUpperCase() === 'PM' && hour !== 12) {
+      hour += 12;
+    }
+
+    if (period.toUpperCase() === 'AM' && hour === 12) {
+      hour = 0;
+    }
+
+    return new Date(
+      2000 + Number(year),
+      Number(month) - 1,
+      Number(day),
+      hour,
+      minute
+    );
+  };
+
+  //filter only tasks due today and sort them by the time they are due
+  const todayTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed == false).sort((a, b) => {
+    return (
+      convertToDateTime(a.dueDate, a.time) -
+      convertToDateTime(b.dueDate, b.time)
+    );
+  });
+
+  const todayCompletedTasks = tasks.filter(task => task.dueDate === todayDueDate && task.completed).sort((a, b) => {
+    return (
+      convertToDateTime(a.dueDate, a.time) -
+      convertToDateTime(b.dueDate, b.time)
+    );
+  });
   
   const allTasksCount = todayTasks.length + todayCompletedTasks.length;
   const completedTaskPercent = allTasksCount === 0 ? '0%' : todayCompletedTasks.length / allTasksCount * 100 + '%';
