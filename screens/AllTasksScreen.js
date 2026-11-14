@@ -79,37 +79,6 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
   return (
     <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>All Tasks</Text>
-      
-      {/* All Tasks?? */}
-      <View style={styles.taskBox}>
-        {tasksByDate.length === 0 ? (
-          <Text style={styles.noTasksText}>No tasks due</Text>
-        ) : (
-        tasksByDate.map((task, index) => {
-         
-          // Find the Task's list color
-          const taskList = lists.find(list => list.name === task.list);
-
-          return (
-            <View key={task.id}>
-              <Task
-                title={task.title}
-                list={task.list}
-                date={task.dueDate}
-                time={task.time}
-                color={taskList.color}
-                completed={task.completed}
-                onPress={() => onToggleTaskComplete(task.id)}
-              />
-
-              {index < tasksByDate.length - 1 && (
-                <View style={styles.divider} />
-              )}
-            </View>
-          );
-        })
-      )}
-      </View>
 
       {/*
       // OverDue Tasks - only show section if there is at least one overdue task
