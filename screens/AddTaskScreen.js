@@ -2,13 +2,18 @@ import { useState } from 'react';
 import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export function AddTaskScreen({ onAddTask, lists }) {
 
   const [title, setTitle] = useState('');
   const [list, setList] = useState('');
   const [dueDate, setDueDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);  
   const [time, setTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [location, setLocation] = useState('');
   const [notes, setNotes] = useState('');
 
@@ -73,19 +78,20 @@ export function AddTaskScreen({ onAddTask, lists }) {
   return (
     <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>Add Task</Text>
+
+      {/* Task Name - Text Box */}
       <Text style={styles.inputBoxLabel}>Task name</Text>
-      
       <TextInput style={styles.taskInputBox}
         placeholder="Enter task name"
         value={title}
         onChangeText={setTitle}
       />
 
-      
+      {/* List - Drop Down */}
       <Text style={styles.inputBoxLabel}>List</Text>
       <Dropdown
         style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
+        placeholderStyle={styles.placeholderText}
         data={listOptions}
         labelField="label"
         valueField="value"
@@ -113,20 +119,89 @@ export function AddTaskScreen({ onAddTask, lists }) {
         }}
       />
       
-
+      {/* Date - DateTime Picker */}
       <Text style={styles.inputBoxLabel}>Due Date</Text>
-      <TextInput style={styles.taskInputBox}
-        placeholder="MM/DD/YYYY"
-        value={dueDate}
-        onChangeText={setDueDate}
-      />
+      <TouchableOpacity
+        style={styles.taskInputBox}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text style={dueDate === '' ? styles.placeholderText : styles.inputText}>
+          {dueDate === '' ? 'Select a Date' : dueDate}
+        </Text>
+      </TouchableOpacity>
 
+      {showDatePicker && (
+        <>
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            display="spinner"
+            onChange={(event, selectedDateValue) => {
+              if (selectedDateValue) {
+                setSelectedDate(selectedDateValue);
+
+                const formattedDate =
+                  String(selectedDateValue.getMonth() + 1) + '/' +
+                  String(selectedDateValue.getDate()) + '/' +
+                  String(selectedDateValue.getFullYear()).slice(-2);
+
+                setDueDate(formattedDate);
+              }
+            }}
+          />
+          <TouchableOpacity
+            style={styles.doneTimeButton}
+            onPress={() => setShowDatePicker(false)}
+          >
+            <Text style={styles.doneTimeText}>Done</Text>
+          </TouchableOpacity>
+        </>
+      )}
+
+
+      {/* Time - DateTime Picker */}
       <Text style={styles.inputBoxLabel}>Time</Text>
-      <TextInput style={styles.taskInputBox}
-        placeholder="Enter a Time"
-        value={time}
-        onChangeText={setTime}
-      />
+      <TouchableOpacity
+        style={styles.taskInputBox}
+        onPress={() => setShowTimePicker(true)}
+      >
+        <Text style={time === '' ? styles.placeholderText : styles.inputText}>
+          {time === '' ? 'Select a Time' : time}
+        </Text>
+      </TouchableOpacity>
+      {showTimePicker && (
+        <>
+          <DateTimePicker
+            value={selectedTime}
+            mode="time"
+            display="spinner"
+            //display="default"
+            onChange={(event, selectedTimeValue) => {
+              //setShowTimePicker(false);
+
+              if (selectedTimeValue) {
+                setSelectedTime(selectedTimeValue);
+
+                const formattedTime = selectedTimeValue.toLocaleTimeString([], {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true,
+                });
+
+                setTime(formattedTime);
+              }
+            }}
+          />
+          <TouchableOpacity
+            style={styles.doneTimeButton}
+            onPress={() => setShowTimePicker(false)}
+          >
+            <Text style={styles.doneTimeText}>Done</Text>
+          </TouchableOpacity>
+        </>
+    )}
+
+
 
       <Text style={styles.inputBoxLabel}>Location</Text>
       <TextInput style={styles.taskInputBox}
@@ -202,11 +277,6 @@ const styles = StyleSheet.create({
     height: 45,
   },
 
-  placeholderStyle: {
-    color: '#888888',
-    fontSize: 16,
-  },
-
   dropdownItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -219,5 +289,25 @@ const styles = StyleSheet.create({
 
   dropdownItemText: {
     fontSize: 16,
+  },
+  placeholderText: {
+    color: '#888888',
+    fontSize: 14,
+  },
+
+  inputText: {
+    color: 'black',
+    fontSize: 16,
+  },
+
+  doneTimeButton: {
+    alignSelf: 'flex-end',
+    padding: 10,
+  },
+
+  doneTimeText: {
+    color: '#2d68e9',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

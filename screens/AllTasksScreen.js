@@ -16,7 +16,7 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
   const convertToDateTime = (dateString, timeString) => {
     const [month, day, year] = dateString.split('/');
 
-    const [time, period] = timeString.split(' ');
+    const [time, period] = timeString.trim().split(/\s+/);
     let [hour, minute] = time.split(':');
 
     hour = Number(hour);
