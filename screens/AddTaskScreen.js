@@ -3,13 +3,14 @@ import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert 
 import { Dropdown } from 'react-native-element-dropdown';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Calendar } from 'react-native-calendars';
 
 export function AddTaskScreen({ onAddTask, lists }) {
 
   const [title, setTitle] = useState('');
   const [list, setList] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);  
   const [time, setTime] = useState('');
   const [selectedTime, setSelectedTime] = useState(new Date());
@@ -93,6 +94,7 @@ export function AddTaskScreen({ onAddTask, lists }) {
         style={styles.dropdown}
         placeholderStyle={styles.placeholderText}
         data={listOptions}
+        //maxHeight={200}
         labelField="label"
         valueField="value"
         placeholder="Select a List"
@@ -119,11 +121,11 @@ export function AddTaskScreen({ onAddTask, lists }) {
         }}
       />
       
-      {/* Date - DateTime Picker */}
+      {/* Date - Calendar */}
       <Text style={styles.inputBoxLabel}>Due Date</Text>
       <TouchableOpacity
         style={styles.taskInputBox}
-        onPress={() => setShowDatePicker(true)}
+        onPress={() => setShowDatePicker(!showDatePicker)}
       >
         <Text style={dueDate === '' ? styles.placeholderText : styles.inputText}>
           {dueDate === '' ? 'Select a Date' : dueDate}
@@ -131,31 +133,31 @@ export function AddTaskScreen({ onAddTask, lists }) {
       </TouchableOpacity>
 
       {showDatePicker && (
-        <>
-          <DateTimePicker
-            value={selectedDate}
-            mode="date"
-            display="spinner"
-            onChange={(event, selectedDateValue) => {
-              if (selectedDateValue) {
-                setSelectedDate(selectedDateValue);
+        <View style={styles.calendarContainer}>
+          <Calendar
+            onDayPress={(day) => {
 
-                const formattedDate =
-                  String(selectedDateValue.getMonth() + 1) + '/' +
-                  String(selectedDateValue.getDate()) + '/' +
-                  String(selectedDateValue.getFullYear()).slice(-2);
+              setSelectedDate(day.dateString);
 
-                setDueDate(formattedDate);
+              const [year, month, date] = day.dateString.split('-');
+
+              const formattedDate =
+                Number(month) + '/' +
+                Number(date) + '/' +
+                year.slice(-2);
+
+              setDueDate(formattedDate);
+              setShowDatePicker(false);
+            }}
+
+            markedDates={{
+              [selectedDate]: {
+                selected: true,
+                selectedColor: '#2d68e9'
               }
             }}
           />
-          <TouchableOpacity
-            style={styles.doneTimeButton}
-            onPress={() => setShowDatePicker(false)}
-          >
-            <Text style={styles.doneTimeText}>Done</Text>
-          </TouchableOpacity>
-        </>
+        </View>
       )}
 
 
@@ -163,7 +165,7 @@ export function AddTaskScreen({ onAddTask, lists }) {
       <Text style={styles.inputBoxLabel}>Time</Text>
       <TouchableOpacity
         style={styles.taskInputBox}
-        onPress={() => setShowTimePicker(true)}
+        onPress={() => setShowTimePicker(!showTimePicker)}
       >
         <Text style={time === '' ? styles.placeholderText : styles.inputText}>
           {time === '' ? 'Select a Time' : time}
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   placeholderText: {
-    color: '#888888',
+    color: '#aaaaaa',
     fontSize: 14,
   },
 

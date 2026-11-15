@@ -109,7 +109,8 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
         <Text style={styles.sectionTitle}> Today's Tasks </Text>
         <TouchableOpacity style={styles.viewAllContainer} onPress={() => navigation.navigate('All Tasks')}>
           <Text style={styles.viewAllText}>View All</Text>
-          <Text style={styles.viewAllArrow}>›</Text>
+          <Ionicons name="chevron-forward-outline" size={18} color='black' />
+          {/*<Text style={styles.viewAllArrow}>›</Text>*/}
         </TouchableOpacity>
       </View>
 
