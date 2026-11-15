@@ -1,11 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 
-export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete }) {
+export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete, onAddTask }) {
   const { listName, listColor } = route.params;
-
+  const [modalVisible, setModalVisible] = useState(false);
   const [showCompleted, setShowCompleted] = useState(true);
+  const [taskName, setTaskName] = useState('');
+  const [taskDate, setTaskDate] = useState('');
+  const [taskTime, setTaskTime] = useState('');
 
   const convertToDateTime = (dateString, timeString) => {
     const [month, day, year] = dateString.split('/');
@@ -32,6 +35,39 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       minute
     );
   };
+
+  const saveTask = () => {
+      if (taskName === '' || taskDate === '' || taskTime === '') {
+        Alert.alert('Error', 'Please enter a task name, date, and time.');
+        return;
+      }
+
+      if (!/^\d{1,2}\/\d{1,2}\/\d{2}$/.test(taskDate)) {
+        Alert.alert('Error', 'Please enter the date in MM/DD/YY format.');
+        return;
+      }
+
+      if (!/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(taskTime)) {
+        Alert.alert('Error', 'Please enter the time in HH:MM AM/PM format.');
+        return;
+      }
+
+      const newTask = {
+        title: taskName,
+        list: listName,
+        dueDate: taskDate,
+        time: taskTime,
+        location: '',
+        notes: ''
+      };
+
+      onAddTask(newTask);
+
+      setTaskName('');
+      setTaskDate('');
+      setTaskTime('');
+      setModalVisible(false);
+    };
 
   const listTasks = tasks.filter(task => task.list === listName && task.completed == false).sort((a, b) => {
     return (
@@ -74,7 +110,15 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       {/* Task or Calendar View Button Section */}
 
       {/* Task Section */}
-      <Text style={styles.sectionTitle}>To Do</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.sectionTitle}>To Do</Text>
+        <TouchableOpacity style={styles.addListButton} 
+            onPress={() => setModalVisible(true)}
+          >
+            <Ionicons name="add-circle" size={38} color={listColor}/>
+          </TouchableOpacity>
+      </View>
+
       <View style={styles.taskContainer}>
         {listTasks.length === 0 ? (
           <Text style={styles.noTasksText}>No tasks</Text>
@@ -144,6 +188,62 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
         <Text style={styles.deletedText}>Deleted Tasks</Text>
         <Text style={styles.arrow}>›</Text>
       </TouchableOpacity>
+
+      {/* Add task modal */}
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalBox}>
+
+            <Text style={styles.modalTitle}>Add Task</Text>
+
+            <Text style={styles.inputLabel}>Task Name</Text>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter task name"
+              value={taskName}
+              onChangeText={setTaskName}
+            />
+
+            <Text style={styles.inputLabel}>Due Date</Text>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="MM/DD/YY"
+              value={taskDate}
+              onChangeText={setTaskDate}
+            />
+
+            <Text style={styles.inputLabel}>Time</Text>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="3:30 PM"
+              value={taskTime}
+              onChangeText={setTaskTime}
+            />
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text>Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.saveButton, { backgroundColor: listColor }]}
+                onPress={saveTask}
+              >
+                <Text style={styles.saveButtonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+
+          </View>
+        </View>
+      </Modal>
 
     </ScrollView>
 
@@ -277,6 +377,68 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'gray',
     paddingVertical: 8,
+  },
+
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modalBox: {
+    width: '85%',
+    backgroundColor: 'white',
+    borderRadius: 15,
+    padding: 20,
+  },
+
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+
+  inputLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
+  },
+
+  inputBox: {
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 10,
+    padding: 12,
+  },
+
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 20,
+  },
+
+  cancelButton: {
+    padding: 12,
+    marginRight: 10,
+  },
+
+  saveButton: {
+    padding: 12,
+    borderRadius: 8,
+  },
+
+  saveButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 
 });

@@ -103,6 +103,7 @@ export default function App() {
               route={props.route}
               tasks={tasks}
               onToggleTaskComplete={toggleTaskCompleted}
+              onAddTask={addTask}
             />
           )}
         </Stack.Screen>
