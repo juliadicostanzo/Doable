@@ -167,7 +167,15 @@ export default function App() {
           )}
         </Tab.Screen>
         
-        <Tab.Screen name="Calendar" component={CalendarScreen}/>
+        <Tab.Screen name="Calendar">
+          {() => (
+            <CalendarScreen
+              tasks={tasks}
+              lists={lists}
+              onToggleTaskComplete={toggleTaskCompleted}
+            />
+          )}
+        </Tab.Screen>
         
         <Tab.Screen name="Add Task">
           {() => (
