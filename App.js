@@ -82,6 +82,17 @@ export default function App() {
     );
   };
 
+  // Function to edit a List (not used yet)
+  const editList = (listId, updatedName, updatedColor) => {
+  setLists( // Updates lists array
+    lists.map((list) => // Loop through all lists 
+      list.id === listId // Check if the list id matches the listId passed in
+        ? { ...list, name: updatedName, color: updatedColor } // If it matches, updates list object with new name and color
+        : list // If it doesn't match, return thetlisr object unchanged
+    )
+  );
+};
+
 
   function ListsNavigator() {
     return (
@@ -91,8 +102,8 @@ export default function App() {
             <ListsScreen
               navigation={props.navigation}
               route={props.route}
-              lists={lists}
-              onAddList={addList}
+              lists={lists} // pass lists array
+              onAddList={addList} // pass func to add list
             />
           )}
         </Stack.Screen>
@@ -101,9 +112,10 @@ export default function App() {
             <ListDetailScreen
               navigation={props.navigation}
               route={props.route}
-              tasks={tasks}
-              onToggleTaskComplete={toggleTaskCompleted}
-              onAddTask={addTask}
+              tasks={tasks} // pass tasks array
+              onToggleTaskComplete={toggleTaskCompleted} // pass func to toggle task completed/uncompleted
+              onAddTask={addTask} // pass func to add task
+              // onEditList={editList} // pass func to edit list
             />
           )}
         </Stack.Screen>

@@ -2,14 +2,20 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput,
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 
-export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete, onAddTask }) {
-  const { listName, listColor } = route.params;
-  const [modalVisible, setModalVisible] = useState(false);
-  const [showCompleted, setShowCompleted] = useState(true);
+export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete, onAddTask}) {
+  const { listId, listName, listColor } = route.params;
+  
+  // add task 
   const [taskName, setTaskName] = useState('');
   const [taskDate, setTaskDate] = useState('');
   const [taskTime, setTaskTime] = useState('');
 
+  // add task modal
+  const [modalVisible, setModalVisible] = useState(false);
+  
+  // show/hide completed uncompleted tasks
+  const [showCompleted, setShowCompleted] = useState(true);
+  
   const convertToDateTime = (dateString, timeString) => {
     const [month, day, year] = dateString.split('/');
 
