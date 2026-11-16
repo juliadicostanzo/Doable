@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
+import { ListTask } from '../components/ListTask.js'; 
 
 export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete, onAddTask}) {
   const { listId, listName, listColor } = route.params;
@@ -131,17 +132,11 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
         ) : (
         listTasks.map((task, index) => (
           <View key={task.id}>
-            <TouchableOpacity style={styles.taskRow}  onPress={() => onToggleTaskComplete(task.id)}>
-              <Ionicons name="radio-button-off" size={24} color= {listColor} style={styles.completeButton}/>
-
-              <Text style={styles.taskTitle}>{task.title}</Text>
-
-              <View style={styles.taskRight}>
-                <Text style={styles.taskDate}>{task.dueDate}</Text>
-                <Text style={styles.taskTime}>{task.time}</Text>
-              </View>
-            </TouchableOpacity>
-
+            <ListTask
+              task={task}
+              color={listColor}
+              onToggleComplete={() => onToggleTaskComplete(task.id)}
+            />
             {index < listTasks.length - 1 && (
               <View style={styles.divider} />
             )}
@@ -169,17 +164,11 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       <View style={styles.taskContainer}>
         {listCompletedTasks.map((task, index) => (
           <View key={task.id}>
-            {/* Button */}
-            <TouchableOpacity style={styles.taskRow} onPress={() => onToggleTaskComplete(task.id)}>
-              <Ionicons name="radio-button-on" size={24} color= {listColor} style={styles.completeButton}/>
-
-              <Text style={styles.taskTitle}>{task.title}</Text>
-
-              <View style={styles.taskRight}>
-                <Text style={styles.taskDate}>{task.dueDate}</Text>
-                <Text style={styles.taskTime}>{task.time}</Text>
-              </View>
-            </TouchableOpacity>
+            <ListTask
+              task={task}
+              color={listColor}
+              onToggleComplete={() => onToggleTaskComplete(task.id)}
+            />
             {index < listCompletedTasks.length - 1 && (
               <View style={styles.divider} />
             )}
@@ -192,7 +181,11 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
 
       <TouchableOpacity style={styles.deletedList}>
         <Text style={styles.deletedText}>Deleted Tasks</Text>
-        <Text style={styles.arrow}>›</Text>
+        <Ionicons
+          name="chevron-forward-outline"
+          size={22}
+          color="black"
+        />
       </TouchableOpacity>
 
       {/* Add task modal */}
