@@ -95,12 +95,8 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
           return (
             <View key={task.id}>
               <Task
-                title={task.title}
-                list={task.list}
-                date={task.dueDate}
-                time={task.time}
+                task={task}
                 color={taskList.color}
-                completed={task.completed}
                 onPress={() => onToggleTaskComplete(task.id)}
               />
 
@@ -129,12 +125,8 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
           return (
             <View key={task.id}>
               <Task
-                title={task.title}
-                list={task.list}
-                date={task.dueDate}
-                time={task.time}
+                task={task}
                 color={taskList.color}
-                completed={task.completed}
                 onPress={() => onToggleTaskComplete(task.id)}
               />
 
@@ -161,12 +153,8 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
           return (
             <View key={task.id}>
               <Task
-                title={task.title}
-                list={task.list}
-                date={task.dueDate}
-                time={task.time}
+                task={task}
                 color={taskList.color}
-                completed={task.completed}
                 onPress={() => onToggleTaskComplete(task.id)}
               />
 
@@ -193,12 +181,8 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
           return (
             <View key={task.id}>
               <Task
-                title={task.title}
-                list={task.list}
-                date={task.dueDate}
-                time={task.time}
+                task={task}
                 color={taskList.color}
-                completed={task.completed}
                 onPress={() => onToggleTaskComplete(task.id)}
               />
 
