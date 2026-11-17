@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { TaskSection } from '../components/TaskSection.js'; 
 import { Task } from '../components/Task.js'; 
+import { useState } from 'react';
 
 export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
   
@@ -40,6 +41,14 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
     );
   };
 
+  // Fliter only compeleted tasks
+  const completedTasks = tasks.filter(task => task.completed == true);
+  
+  // Sort compeleted tasks by date 
+  const compeletedTasksByDate = [...completedTasks].sort((a, b) => { 
+    return convertToDateTime(a.dueDate, a.time) - convertToDateTime(b.dueDate, b.time);
+  });
+
   // Fliter only uncompeleted tasks
   const uncompletedTasks = tasks.filter(task => task.completed == false);
   
@@ -77,65 +86,89 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
     return taskDate > endOfWeek && taskDate <= afterEndOfWeek;
   });
 
+  //true if any of the arrays has a task
+  const hasUncompletedTasks = 
+    overDueTasks.length > 0 ||
+    tasksDueToday.length > 0 ||
+    tasksDueThisWeek.length > 0 ||
+    tasksDueAfterThisWeek.length > 0;
+
+  // show/hide completed uncompleted tasks
+    const [showCompleted, setShowCompleted] = useState(true);
+
   return (
     <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>All Tasks</Text>
 
+      {/* No incomplete tasks */}
+      {!hasUncompletedTasks && (
+        <View style={styles.noTasksContainer}>
+          <Text style={styles.noTasksText}>No tasks due</Text>
+        </View>
+      )}
+
       {/* OverDue Tasks - only show section if there is at least one overdue task*/}
       {overDueTasks.length > 0 && (
-      <>
-        <Text style={styles.sectionTitle}>Overdue</Text>
-
-        <View style={styles.taskBox}>
-          {overDueTasks.map((task, index) => {
-         
-          // Find the Task's list color
-          const taskList = lists.find(list => list.name === task.list);
-
-          return (
-            <View key={task.id}>
-              <Task
-                task={task}
-                color={taskList.color}
-                onPress={() => onToggleTaskComplete(task.id)}
-              />
-
-              {index < overDueTasks.length - 1 && (
-                <View style={styles.divider} />
-              )}
-            </View>
-          );
-          })}
-        </View>
-      </>
-    )}
+        <TaskSection
+          title="Overdue"
+          tasks={overDueTasks}
+          lists={lists}
+          onToggleTaskComplete={onToggleTaskComplete}
+        />
+      )}
 
       {/* Due Today */}
-      <TaskSection
-        title="Due Today"
-        tasks={tasksDueToday}
-        lists={lists}
-        emptyMessage="No tasks due today"
-        onToggleTaskComplete={onToggleTaskComplete}
-      />
+      {tasksDueToday.length > 0 && (
+        <TaskSection
+          title="Due Today"
+          tasks={tasksDueToday}
+          lists={lists}
+          onToggleTaskComplete={onToggleTaskComplete}
+        />
+      )}
 
       {/* Due This Week */}
-      <TaskSection
-        title="Due This Week"
-        tasks={tasksDueThisWeek}
-        lists={lists}
-        emptyMessage="No tasks due this week"
-        onToggleTaskComplete={onToggleTaskComplete}
-      />
+      {tasksDueThisWeek.length > 0 && (
+        <TaskSection
+          title="Due This Week"
+          tasks={tasksDueThisWeek}
+          lists={lists}
+          onToggleTaskComplete={onToggleTaskComplete}
+        />
+      )}
 
       {/* Due After This Week */}
-      <TaskSection
-        title="Due After This Week"
-        tasks={tasksDueAfterThisWeek}
-        lists={lists}
-        emptyMessage="No tasks due after this week"
-        onToggleTaskComplete={onToggleTaskComplete}
-      />
+      {tasksDueAfterThisWeek.length > 0 && (
+        <TaskSection
+          title="Due After This Week"
+          tasks={tasksDueAfterThisWeek}
+          lists={lists}
+          onToggleTaskComplete={onToggleTaskComplete}
+        />
+      )}
+
+      {/* All Compeleted Tasks */}
+      {compeletedTasksByDate.length > 0 && (
+        <>
+          <View style={styles.completedHeader}>
+            <Text style={styles.sectionTitle}>Completed</Text>
+
+            <TouchableOpacity onPress={() => setShowCompleted(!showCompleted)}>
+              <Text style={styles.hideText}>
+                {showCompleted ? 'Hide' : 'Show'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {showCompleted && (
+            <TaskSection
+              tasks={compeletedTasksByDate}
+              lists={lists}
+              onToggleTaskComplete={onToggleTaskComplete}
+            />
+          )}
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -153,19 +186,23 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  taskBox: {
-    borderColor: '#cccccc',
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 12,
-    width: '100%',
-    marginBottom: 25,
+  noTasksContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 100,
   },
 
-  divider: {
-    height: 1,
-    backgroundColor: '#dddddd',
-    marginVertical: 10,
+  noTasksText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'gray',
+    paddingVertical: 10,
+  },
+
+  completedHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   sectionTitle: {
@@ -174,10 +211,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  noTasksText: {
-    textAlign: 'center',
+  hideText: {
     fontSize: 16,
-    color: 'gray',
-    paddingVertical: 10,
+    color: '#2d68e9',
+    marginBottom: 10,
+    //fontWeight: 'bold',
+    marginRight: 10,
   },
 });

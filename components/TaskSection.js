@@ -5,13 +5,11 @@ export function TaskSection({ title, tasks, lists, emptyMessage, onToggleTaskCom
 
   return (
     <>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      {/* title is optional */}
+      {title && (<Text style={styles.sectionTitle}>{title}</Text> )}
       <View style={styles.taskBox}>
 
-        {tasks.length === 0 ? (
-          <Text style={styles.noTasksText}> {emptyMessage} </Text>
-        ) : (
-          tasks.map((task, index) => {
+        {tasks.map((task, index) => {
             
             // Find the Task's list color
             const taskList = lists.find(list => list.name === task.list);
@@ -30,7 +28,7 @@ export function TaskSection({ title, tasks, lists, emptyMessage, onToggleTaskCom
               </View>
             );
           })
-        )}
+        }
       </View>
     </>
   );
