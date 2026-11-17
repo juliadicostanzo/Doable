@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
+import { TaskSection } from '../components/TaskSection.js'; 
 import { ListTask } from '../components/ListTask.js'; 
 
 export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplete, onAddTask}) {
-  const { listId, listName, listColor } = route.params;
+  const { list } = route.params;
   
   // add task 
   const [taskName, setTaskName] = useState('');
@@ -61,7 +62,7 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
 
       const newTask = {
         title: taskName,
-        list: listName,
+        list: list.name,
         dueDate: taskDate,
         time: taskTime,
         location: '',
@@ -76,13 +77,13 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       setModalVisible(false);
     };
 
-  const listTasks = tasks.filter(task => task.list === listName && task.completed == false).sort((a, b) => {
+  const listTasks = tasks.filter(task => task.list === list.name && task.completed == false).sort((a, b) => {
     return (
       convertToDateTime(a.dueDate, a.time) -
       convertToDateTime(b.dueDate, b.time)
     );
   });
-  const listCompletedTasks = tasks.filter(task => task.list === listName && task.completed).sort((a, b) => {
+  const listCompletedTasks = tasks.filter(task => task.list === list.name && task.completed).sort((a, b) => {
     return (
       convertToDateTime(a.dueDate, a.time) -
       convertToDateTime(b.dueDate, b.time)
@@ -101,14 +102,14 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
       </TouchableOpacity>
 
       {/* List Title */}
-      <Text style={styles.pageTitle}>{listName}</Text>
+      <Text style={styles.pageTitle}>{list.name}</Text>
 
       {/* Progress Section */}
       <View style={styles.progressContainer}>
         <Text style={styles.sectionTitle}>Progress</Text>
 
         <View style={styles.progressBarBackground}>
-          <View style={{backgroundColor: listColor, height: '100%', width: completedTaskPercent}} />
+          <View style={{backgroundColor: list.color, height: '100%', width: completedTaskPercent}} />
         </View>
 
         <Text style={styles.progressText}> {listCompletedTasks.length} of {allTasksCount} tasks complete </Text>
@@ -122,28 +123,23 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
         <TouchableOpacity style={styles.addListButton} 
             onPress={() => setModalVisible(true)}
           >
-            <Ionicons name="add-circle" size={38} color={listColor}/>
+            <Ionicons name="add-circle" size={38} color={list.color}/>
           </TouchableOpacity>
       </View>
 
+      {listTasks.length === 0 ? (
       <View style={styles.taskContainer}>
-        {listTasks.length === 0 ? (
-          <Text style={styles.noTasksText}>No tasks</Text>
-        ) : (
-        listTasks.map((task, index) => (
-          <View key={task.id}>
-            <ListTask
-              task={task}
-              color={listColor}
-              onToggleComplete={() => onToggleTaskComplete(task.id)}
-            />
-            {index < listTasks.length - 1 && (
-              <View style={styles.divider} />
-            )}
-          </View>
-        ))
-      )}
+        <Text style={styles.noTasksText}>No tasks</Text>
       </View>
+      ) : (
+        <TaskSection
+          tasks={listTasks}
+          color={list.color}
+          showList={false}
+          onToggleTaskComplete={onToggleTaskComplete}
+        />
+      )}
+    
 
       {/* Completed Task Section */}
       {/* Only show if there is a completed task */}
@@ -154,28 +150,20 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
           
           {/* toggle Show and Hide completed tasks */}
           <TouchableOpacity onPress={() => setShowCompleted(!showCompleted)}>
-            <Text style={[styles.hideText, {color: listColor}]}>
+            <Text style={[styles.hideText, {color: list.color}]}>
               {showCompleted ? 'Hide' : 'Show'}
             </Text>
           </TouchableOpacity>
         </View>
 
-      {showCompleted && (
-      <View style={styles.taskContainer}>
-        {listCompletedTasks.map((task, index) => (
-          <View key={task.id}>
-            <ListTask
-              task={task}
-              color={listColor}
-              onToggleComplete={() => onToggleTaskComplete(task.id)}
-            />
-            {index < listCompletedTasks.length - 1 && (
-              <View style={styles.divider} />
-            )}
-          </View>
-        ))}
-      </View>
-      )}
+        {showCompleted && (
+          <TaskSection
+            tasks={listCompletedTasks}
+            color={list.color}
+            showList={false}
+            onToggleTaskComplete={onToggleTaskComplete}
+          />
+        )}
       </>
       )}
 
@@ -233,7 +221,7 @@ export function ListDetailScreen({ route, navigation, tasks, onToggleTaskComplet
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.saveButton, { backgroundColor: listColor }]}
+                style={[styles.saveButton, { backgroundColor: list.color }]}
                 onPress={saveTask}
               >
                 <Text style={styles.saveButtonText}>Save</Text>

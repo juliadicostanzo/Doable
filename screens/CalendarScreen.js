@@ -1,7 +1,7 @@
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { Calendar } from 'react-native-calendars';
-import { Task } from '../components/Task.js'; 
+import { TaskSection } from '../components/TaskSection.js'; 
 
 export function CalendarScreen({tasks, lists, onToggleTaskComplete}) {
   // Today's date
@@ -87,7 +87,7 @@ export function CalendarScreen({tasks, lists, onToggleTaskComplete}) {
 
 
   return (
-    <View style={styles.pageContainer}>
+    <ScrollView style={styles.pageContainer}>
     
       {/* Page Title */}
       <Text style={styles.pageTitle}>Calendar</Text>
@@ -109,37 +109,21 @@ export function CalendarScreen({tasks, lists, onToggleTaskComplete}) {
 
       {/* Tasks for Selected Date */}
       <Text style={styles.selectedDateText}>{selectedDateString}</Text>
-      <ScrollView style={styles.taskContainer}>
-        {selectedDateTasks.length === 0 ? (
-
-          <Text style={styles.noTasksText}>
-            No tasks due
-          </Text>
-
-        ) : (
-          selectedDateTasks.map((task, index) => {
-
-            const taskList = lists.find( list => list.name === task.list);
-
-            return (
-              <View key={task.id}>
-
-                <Task
-                  task={task}
-                  color={taskList.color}
-                  onPress={() => onToggleTaskComplete(task.id)}
-                />
-
-                {index < selectedDateTasks.length - 1 && (
-                  <View style={styles.divider} />
-                )}
-              </View>
-            );
-          })
-        )}
-      </ScrollView>
       
-    </View>
+        {selectedDateTasks.length === 0 ? (
+          <View style={styles.taskContainer}>
+            <Text style={styles.noTasksText}> No tasks due </Text>
+          </View>
+        ) : (
+          <TaskSection
+            tasks={selectedDateTasks}
+            lists={lists}
+            onToggleTaskComplete={onToggleTaskComplete}
+          />
+        )}
+      
+      
+    </ScrollView>
   );
 }
 
@@ -160,6 +144,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 20,
+    marginBottom: 10,
   },
 
   taskContainer: {
@@ -167,7 +152,8 @@ const styles = StyleSheet.create({
     borderColor: '#cccccc',
     borderRadius: 12,
     padding: 12,
-    marginTop: 20,
+    width: '100%',
+    marginBottom: 25,
   },
 
   divider: {

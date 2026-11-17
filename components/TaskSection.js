@@ -1,25 +1,32 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Task } from './Task.js';
 
-export function TaskSection({ title, tasks, lists, emptyMessage, onToggleTaskComplete }) {
+export function TaskSection({ title, tasks, lists, color, showList=true, showDueDate=true, onToggleTaskComplete }) {
 
   return (
     <>
-      {/* title is optional */}
+      {/* Only show title if one was passed in */}
       {title && (<Text style={styles.sectionTitle}>{title}</Text> )}
       <View style={styles.taskBox}>
 
         {tasks.map((task, index) => {
             
-            // Find the Task's list color
-            const taskList = lists.find(list => list.name === task.list);
+            // If a fixed color was passed in, use it
+            let taskColor = color;
+            // Otherwise find the task's list color
+            if (!taskColor) {
+              const taskList = lists.find(list => list.name === task.list);
+              taskColor = taskList.color;
+            }
 
             return (
               <View key={task.id}>
                 <Task
                   task={task}
-                  color={taskList.color}
+                  color={taskColor}
                   onPress={() => onToggleTaskComplete(task.id)}
+                  showList={showList}
+                  showDueDate={showDueDate}
                 />
 
                 {index < tasks.length - 1 && (
@@ -48,13 +55,6 @@ const styles = StyleSheet.create({
     padding: 12,
     width: '100%',
     marginBottom: 25,
-  },
-
-  noTasksText: {
-    textAlign: 'center',
-    fontSize: 16,
-    color: 'gray',
-    paddingVertical: 10,
   },
 
   divider: {

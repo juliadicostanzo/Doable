@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export function Task({ task, color, onPress }) {
+export function Task({ task, color, onPress, showDueDate=true, showList=true}) {
   
   return (
     <TouchableOpacity style={styles.taskRow} onPress={onPress}>
@@ -16,11 +16,11 @@ export function Task({ task, color, onPress }) {
       
       <View style={styles.taskLeft}>
         <Text style={styles.taskTitle}>{task.title}</Text>
-        <Text style={styles.taskList}>{task.list}</Text>
+        {showList && (<Text style={styles.taskList}>{task.list}</Text>)}
       </View>
 
       <View style={styles.taskRight}>
-        <Text style={styles.taskDate}>{task.dueDate}</Text>
+        {showDueDate && (<Text style={styles.taskDate}>{task.dueDate}</Text>)}
         <Text style={styles.taskTime}>{task.time}</Text>
       </View>
 

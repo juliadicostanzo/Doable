@@ -162,6 +162,7 @@ export default function App() {
             <HomeScreen 
               navigation={props.navigation} 
               tasks={tasks} 
+              lists={lists}
               onToggleTaskComplete={toggleTaskCompleted}
             />
           )}

@@ -1,5 +1,5 @@
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { TodayTask } from '../components/TodayTask.js';
+import { TaskSection } from '../components/TaskSection.js';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
 import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito';
@@ -7,7 +7,7 @@ import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito';
 import { Satisfy_400Regular } from '@expo-google-fonts/satisfy';
 import { PatrickHand_400Regular } from '@expo-google-fonts/patrick-hand';
 
-export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
+export function HomeScreen({ navigation, tasks, lists, onToggleTaskComplete }) {
 
   const [fontsLoaded] = useFonts({
     Nunito_800ExtraBold,
@@ -80,15 +80,17 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
   return (
     <ScrollView style={styles.pageContainer}>
       
+      {/* Logo */}
       <View style={styles.logoContainer}>
         <Text style={styles.logo}>Doable</Text>
       </View>
 
+      {/* Today's Date */}
       <View style={styles.dateContainer}>
         <Text style={styles.dateText}>{todayDateString}</Text>
       </View>
 
-      {/* Progress Section */}
+      {/* Today's Progress Section */}
       <View style={styles.progressContainer}>
         <Text style={styles.sectionTitle}> Today's Progress</Text>
 
@@ -104,7 +106,7 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
       </View>  
       {/* Progress Section End */}
 
-      {/* Task Section */}
+      {/* Task Section Header */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}> Today's Tasks </Text>
         <TouchableOpacity style={styles.viewAllContainer} onPress={() => navigation.navigate('All Tasks')}>
@@ -114,32 +116,18 @@ export function HomeScreen({ navigation, tasks, onToggleTaskComplete }) {
         </TouchableOpacity>
       </View>
 
-        <View style={styles.taskContainer}>
-          {todayTasks.length === 0 ? (
-            <Text style={styles.noTasksText}>No tasks due today!</Text>
-          ) : (
-          todayTasks.map((task, index) => (
-            <View key={task.id}>
-              <TouchableOpacity style={styles.taskRow} onPress={() => onToggleTaskComplete(task.id)}>
-                  
-                <Ionicons name="radio-button-off" size={24} color= '#2d68e9' style={styles.completeButton}/>
-                  
-                <View style={styles.taskContent}>
-                  <TodayTask
-                    title={task.title}
-                    list={task.list}
-                    time={task.time}
-                  />
-                </View>
-              </TouchableOpacity>
-
-              {index < todayTasks.length - 1 && (
-                <View style={styles.divider} />
-              )}
-            </View>
-          ))
-          )}
-        </View>
+        {todayTasks.length === 0 ? (
+          <View style={styles.taskContainer}>
+            <Text style={styles.noTasksText}> No tasks due today! </Text>
+          </View>
+        ) : (
+          <TaskSection
+            tasks={todayTasks}
+            lists={lists}
+            showDueDate={false}
+            onToggleTaskComplete={onToggleTaskComplete}
+          />
+        )}
         {/* Task Section End */}
       
       

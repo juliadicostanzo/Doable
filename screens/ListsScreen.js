@@ -44,8 +44,7 @@ export function ListsScreen({ navigation, lists, onAddList}) {
           style={styles.listRow}
           onPress={() =>
             navigation.navigate('ListDetailScreen', {
-              listName: list.name,
-              listColor: list.color
+              list: list
             })
           }
         >
