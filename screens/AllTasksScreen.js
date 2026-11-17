@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { TaskSection } from '../components/TaskSection.js'; 
 import { Task } from '../components/Task.js'; 
 
 export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
@@ -80,8 +81,7 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
     <ScrollView style={styles.pageContainer}>
       <Text style={styles.pageTitle}>All Tasks</Text>
 
-      {/*
-      // OverDue Tasks - only show section if there is at least one overdue task
+      {/* OverDue Tasks - only show section if there is at least one overdue task*/}
       {overDueTasks.length > 0 && (
       <>
         <Text style={styles.sectionTitle}>Overdue</Text>
@@ -109,91 +109,33 @@ export function AllTasksScreen({ tasks, lists, onToggleTaskComplete }) {
         </View>
       </>
     )}
-    */}
 
       {/* Due Today */}
-      <Text style={styles.sectionTitle}> Due Today </Text>
-      <View style={styles.taskBox}>
-        {tasksDueToday.length === 0 ? (
-          <Text style={styles.noTasksText}>No tasks due today</Text>
-        ) : (
-        tasksDueToday.map((task, index) => {
-         
-          // Find the Task's list color
-          const taskList = lists.find(list => list.name === task.list);
-
-          return (
-            <View key={task.id}>
-              <Task
-                task={task}
-                color={taskList.color}
-                onPress={() => onToggleTaskComplete(task.id)}
-              />
-
-              {index < tasksDueToday.length - 1 && (
-                <View style={styles.divider} />
-              )}
-            </View>
-          );
-        })
-      )}
-      </View>
+      <TaskSection
+        title="Due Today"
+        tasks={tasksDueToday}
+        lists={lists}
+        emptyMessage="No tasks due today"
+        onToggleTaskComplete={onToggleTaskComplete}
+      />
 
       {/* Due This Week */}
-      <Text style={styles.sectionTitle}> Due This Week </Text>
-      <View style={styles.taskBox}>
-        {tasksDueThisWeek.length === 0 ? (
-          <Text style={styles.noTasksText}>No tasks due this week</Text>
-        ) : (
-        tasksDueThisWeek.map((task, index) => {
-         
-          // Find the Task's list color
-          const taskList = lists.find(list => list.name === task.list);
-
-          return (
-            <View key={task.id}>
-              <Task
-                task={task}
-                color={taskList.color}
-                onPress={() => onToggleTaskComplete(task.id)}
-              />
-
-              {index < tasksDueThisWeek.length - 1 && (
-                <View style={styles.divider} />
-              )}
-            </View>
-          );
-        })
-      )}
-      </View>
+      <TaskSection
+        title="Due This Week"
+        tasks={tasksDueThisWeek}
+        lists={lists}
+        emptyMessage="No tasks due this week"
+        onToggleTaskComplete={onToggleTaskComplete}
+      />
 
       {/* Due After This Week */}
-      <Text style={styles.sectionTitle}> Due After This Week </Text>
-      <View style={styles.taskBox}>
-        {tasksDueAfterThisWeek.length === 0 ? (
-          <Text style={styles.noTasksText}>No tasks due after this week</Text>
-        ) : (
-        tasksDueAfterThisWeek.map((task, index) => {
-         
-          // Find the Task's list color
-          const taskList = lists.find(list => list.name === task.list);
-
-          return (
-            <View key={task.id}>
-              <Task
-                task={task}
-                color={taskList.color}
-                onPress={() => onToggleTaskComplete(task.id)}
-              />
-
-              {index < tasksDueAfterThisWeek.length - 1 && (
-                <View style={styles.divider} />
-              )}
-            </View>
-          );
-        })
-      )}
-      </View>
+      <TaskSection
+        title="Due After This Week"
+        tasks={tasksDueAfterThisWeek}
+        lists={lists}
+        emptyMessage="No tasks due after this week"
+        onToggleTaskComplete={onToggleTaskComplete}
+      />
     </ScrollView>
   );
 }
